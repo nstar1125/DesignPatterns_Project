@@ -28,7 +28,6 @@ package com.holub.database;
 
 import java.io.*;
 import java.util.*;
-import com.holub.database.Selector;
 
 /** A table is a database-like table that provides support for
  *  queries.
@@ -243,6 +242,8 @@ public interface Table extends Serializable, Cloneable
 	/** Return an iterator across the rows of the current table.
 	 */
 	Cursor rows();
+
+	ReadOnlyCursor readOnlyCursor();
 
 	/** Build a representation of the Table using the
 	 *  specified Exporter. Create an object from an
