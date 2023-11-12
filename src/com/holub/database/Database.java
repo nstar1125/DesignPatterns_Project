@@ -182,7 +182,9 @@ statement       ::=
                 |   SELECT  [INTO identifier] idList
                                         FROM idList [WHERE expr] [ORDER BY ids]
 
-ids 			::= WHITESPACE IDENTIFIER | IDENTIFIER
+ids 			::= WHITESPACE ids' |  ids'
+ids'			::= IDENTIFIER  |  IDENTIFIER ordering
+ordering 		::= DESC ASC
 
 idList          ::= IDENTIFIER idList' | STAR
 idList'         ::= COMMA IDENTIFIER idList'
