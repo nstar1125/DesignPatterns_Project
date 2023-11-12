@@ -37,6 +37,7 @@ import java.util.*;
 
 public interface Table extends Serializable, Cloneable
 {
+	void accept(TableVisitor visitor);
 	/** Return a shallow copy of the table (the contents are not
 	 *  copied.
 	 */
