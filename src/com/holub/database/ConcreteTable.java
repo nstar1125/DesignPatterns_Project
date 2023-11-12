@@ -310,9 +310,14 @@ import com.holub.tools.ArrayIterator;
             return col;
         }
 
-        @Override
-        public int columnCount() {
-            return columnNames.length;
+		@Override
+		public boolean hasColumn(String columnName) {
+			return Arrays.asList(columnNames).contains(columnName);
+		}
+
+		@Override
+        public int columnIndex(String columnName) throws IndexOutOfBoundsException {
+            return indexOf(columnName);
         }
     }
 

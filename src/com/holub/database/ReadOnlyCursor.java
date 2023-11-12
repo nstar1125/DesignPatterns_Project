@@ -1,7 +1,5 @@
 package com.holub.database;
 
-import java.util.Iterator;
-
 public interface ReadOnlyCursor {
     Object[][] rows();
 
@@ -9,5 +7,7 @@ public interface ReadOnlyCursor {
 
     Object[] column(String columnName) throws IndexOutOfBoundsException;
 
-    int columnCount();
+    boolean hasColumn(String columnName);
+
+    int columnIndex(String columnName) throws IndexOutOfBoundsException;
 }
