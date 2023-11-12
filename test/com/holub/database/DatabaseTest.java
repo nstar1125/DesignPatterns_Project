@@ -55,11 +55,37 @@ public class DatabaseTest {
         assertThrows(ParseFailure.class, () -> database.execute("select * from name2 order by addrId DESC first ASC"));
 
         // parse success
-        database.execute("select * from name order by addrId");
-        database.execute("select * from name order by addrId ASC");
-        database.execute("select * from name order by addrId DESC");
-        database.execute("select * from name order by first ASC addrId DESC");
-        database.execute("select * from name order by first addrId");
-        database.execute("select * from name order by first addrId ASC");
+        {
+            Object[] expected = new Object[]{"Alintstone", "Flintstone", "Holub"};
+            assertArrayEquals(expected, database.execute("select last from name2 order by last").readOnlyCursor().column("last"));
+        }
+        {
+            Object[] expected = new Object[]{"Allen", "Wilma", "Fred"};
+            assertArrayEquals(expected, database.execute("select * from name2 order by addrId ASC").readOnlyCursor().column("first"));
+        }
+        {
+            Object[] expected = new Object[]{"Fred", "Wilma", "Allen"};
+            assertArrayEquals(expected, database.execute("select * from name2 order by addrId DESC").readOnlyCursor().column("first"));
+        }
+        {
+            Object[] expected = new Object[]{"Allen", "Fred", "Wilma"};
+            assertArrayEquals(expected, database.execute("select first, last from name2 order by last DESC").readOnlyCursor().column("first"));
+        }
+        {
+            Object[][] expected = new Object[][]{
+                    {"Fred", "ab", "7"},
+                    {"Wilma", "aa", "7"},
+                    {"Allen", "Holub", "0"},
+            };
+            assertArrayEquals(expected, database.execute("select * from name3 order by addrId DESC, last DESC").readOnlyCursor().rows());
+        }
+        {
+            Object[][] expected = new Object[][]{
+                    {"Wilma", "aa", "7"},
+                    {"Fred", "ab", "7"},
+                    {"Allen", "Holub", "0"},
+            };
+            assertArrayEquals(expected, database.execute("select * from name3 order by addrId DESC, last ASC").readOnlyCursor().rows());
+        }
     }
 }
