@@ -406,7 +406,10 @@ public final class Database
 		USE			= tokens.create( "'USE"		),
 		VALUES 		= tokens.create( "'VALUES"	),
 		WHERE		= tokens.create( "'WHERE"	),
-
+		ORDER  		= tokens.create( "'ORDER"	),
+		BY  		= tokens.create( "'BY"		),
+		ASC  		= tokens.create( "'ASC"		),
+		DESC  		= tokens.create( "'DESC"	),
 		WORK		= tokens.create( "WORK|TRAN(SACTION)?"		),
 		ADDITIVE	= tokens.create( "\\+|-" 					),
 		STRING		= tokens.create( "(\".*?\")|('.*?')"		),
@@ -811,6 +814,8 @@ public final class Database
 
 			Expression where = (in.matchAdvance(WHERE) == null)
 								? null : expr();
+
+
 			Table result = doSelect(columns, into,
 								requestedTableNames, where );
 			return result;
