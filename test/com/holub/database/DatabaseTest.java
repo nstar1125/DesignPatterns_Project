@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,26 +17,27 @@ public class DatabaseTest {
         Database database = new Database("Dbase");
         database.begin();
 
-        Table lastNames = database.execute("select * from name");
+        Table lastNames = database.execute("select * from name2");
         ReadOnlyCursor readOnlyCursor = lastNames.readOnlyCursor();
 
         // rows test
         Object[][] rows = readOnlyCursor.rows();
         Object[][] expectedRows = {
-                {"Fred", "Flintstone", "1"},
-                {"Wilma", "Flintstone", "1"},
+                {"Fred", "Flintstone", "7"},
+                {"Wilma", "Alintstone", "1"},
                 {"Allen", "Holub", "0"},
         };
         assertArrayEquals(rows, expectedRows);
 
         // row test
         Object[] firstRow = readOnlyCursor.row(0);
-        Object[] expectedFirstRow = {"Fred", "Flintstone", "1"};
+        Object[] expectedFirstRow = {"Fred", "Flintstone", "7"};
         assertArrayEquals(firstRow, expectedFirstRow);
 
         // last column test
-        Object[] lastCol = readOnlyCursor.column("last");
-        Object[] expectedLastCol = {"Flintstone", "Flintstone", "Holub"};
+        Object[] lastCol = new Object[0];
+        lastCol = readOnlyCursor.column("last");
+        Object[] expectedLastCol = {"Flintstone", "Alintstone", "Holub"};
         assertArrayEquals(lastCol, expectedLastCol);
     }
 
@@ -46,9 +48,11 @@ public class DatabaseTest {
         database.begin();
 
         // parse fail
-        database.execute("select * from name order by ASC");
-        database.execute("select * from name order by addrId, first");
-        database.execute("select * from name order by addrId, DESC");
+        assertThrows(ParseFailure.class, () -> database.execute("select * from name2 order by ASC"));
+        assertThrows(NoSuchElementException.class, () -> database.execute("select last from name2 order by addrId, first"));
+        assertThrows(ParseFailure.class, () -> database.execute("select * from name2 order by addrId, DESC"));
+        // fail: missing comma between columns
+        assertThrows(ParseFailure.class, () -> database.execute("select * from name2 order by addrId DESC first ASC"));
 
         // parse success
         database.execute("select * from name order by addrId");
