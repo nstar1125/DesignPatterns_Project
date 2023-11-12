@@ -244,6 +244,8 @@ public interface Table extends Serializable, Cloneable
 	 */
 	Cursor rows();
 
+	ReadOnlyCursor readOnlyRows();
+
 	/** Build a representation of the Table using the
 	 *  specified Exporter. Create an object from an
 	 *  {@link Table.Importer} using the constructor with an
