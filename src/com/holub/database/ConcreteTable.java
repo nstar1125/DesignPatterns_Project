@@ -224,6 +224,8 @@ import com.holub.tools.ArrayIterator;
 			return columnNames[index];
 		}
 
+		// bug: table.rows().column() always panics with NullPointerException.
+		// member variable 'row' cannot be instantiated.
 		public Object column(String columnName) {
 			return row[indexOf(columnName)];
 		}
