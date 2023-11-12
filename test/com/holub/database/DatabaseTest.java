@@ -38,4 +38,16 @@ public class DatabaseTest {
         Object[] expectedLastCol = {"Flintstone", "Flintstone", "Holub"};
         assertArrayEquals(lastCol, expectedLastCol);
     }
+
+    @Test
+    @DisplayName("order by parsing 테스트")
+    public void testOrderByParse() throws IOException, ParseFailure {
+        Database database = new Database("Dbase");
+        database.begin();
+
+        // parse fail
+        database.execute("select * from name order by ASC");
+        database.execute("select * from name order by addrId, first");
+        database.execute("select * from name order by addrId, DESC");
+    }
 }
