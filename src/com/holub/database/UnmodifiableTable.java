@@ -99,9 +99,8 @@ public class UnmodifiableTable implements Table
 	{	return wrapped.rows();
 	}
 
-	@Override
-	public ReadOnlyCursor readOnlyRows() {
-		return null;
+	public ReadOnlyCursor readOnlyCursor()
+	{	return wrapped.readOnlyCursor();
 	}
 
 	public void  export(Table.Exporter exporter) throws IOException

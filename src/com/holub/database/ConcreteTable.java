@@ -199,9 +199,11 @@ import com.holub.tools.ArrayIterator;
 		return new Results();
 	}
 
+	// ----------------------------------------------------------------------
+	// Read-only data getter
 	@Override
-	public ReadOnlyCursor readOnlyRows() {
-		return null;
+	public ReadOnlyCursor readOnlyCursor() {
+		return new ReadOnlyResult();
 	}
 
 	// ----------------------------------------------------------------------
@@ -275,6 +277,48 @@ import com.holub.tools.ArrayIterator;
 
 	// @cursor-end
 	// ----------------------------------------------------------------------
+
+    private final class ReadOnlyResult implements ReadOnlyCursor {
+        @Override
+        public Object[][] rows() {
+            Object[][] rows = new Object[rowSet.size()][columnNames.length];
+            for (int i = 0; i < rowSet.size(); i++) {
+                Object[] row = row(i);
+                for (int j = 0; j < row.length; j++) {
+                    rows[i][j] = row[j];
+                }
+            }
+
+            return rows;
+        }
+
+        @Override
+        public Object[] row(int index) throws IndexOutOfBoundsException {
+            return (Object[]) rowSet.get(index);
+        }
+
+        @Override
+        public Object[] column(String columnName) throws IndexOutOfBoundsException {
+            int colIdx = indexOf(columnName);
+            Object[] col = new Object[rowSet.size()];
+
+            for (int i = 0; i < rowSet.size(); i++) {
+                Object[] row = row(i);
+                col[i] = row[colIdx];
+            }
+
+            return col;
+        }
+
+        @Override
+        public int columnCount() {
+            return columnNames.length;
+        }
+    }
+
+	// @read_only_cursor-end
+	// ----------------------------------------------------------------------
+
 	// Undo subsystem.
 	//
 	private interface Undo {
