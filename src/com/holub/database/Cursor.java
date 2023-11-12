@@ -27,6 +27,7 @@
 package com.holub.database;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /** The Cursor provides you with a way of examining a
@@ -70,6 +71,11 @@ public interface Cursor
 	 *  		a select operation.
 	 */
 	String tableName();
+
+	/** Get LinkedList of table's rowSet to mutate the content directly.
+	 * @return LinkedList of table's rowSet
+	 */
+	LinkedList getRowSet();
 
 	/** Advances to the next row, or if this iterator has never
 	 *  been used, advances to the first row. That is, the Cursor

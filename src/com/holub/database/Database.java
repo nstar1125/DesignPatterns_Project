@@ -182,7 +182,12 @@ statement       ::=
                 |   SELECT  [INTO identifier] idList
                                         FROM idList [WHERE expr] [ORDER BY ids]
 
-ids 			::= WHITESPACE IDENTIFIER | IDENTIFIER
+ids 			::= IDENTIFIER ordering ids'
+ids' 			::= COMMA IDENTIFIER ordering ids'
+ 				| e
+
+ordering		::= ASC | DESC
+ 				| e
 
 idList          ::= IDENTIFIER idList' | STAR
 idList'         ::= COMMA IDENTIFIER idList'
@@ -404,7 +409,10 @@ public final class Database
 		USE			= tokens.create( "'USE"		),
 		VALUES 		= tokens.create( "'VALUES"	),
 		WHERE		= tokens.create( "'WHERE"	),
-
+		ORDER  		= tokens.create( "'ORDER"	),
+		BY  		= tokens.create( "'BY"		),
+		ASC  		= tokens.create( "'ASC"		),
+		DESC  		= tokens.create( "'DESC"	),
 		WORK		= tokens.create( "WORK|TRAN(SACTION)?"		),
 		ADDITIVE	= tokens.create( "\\+|-" 					),
 		STRING		= tokens.create( "(\".*?\")|('.*?')"		),
@@ -809,8 +817,24 @@ public final class Database
 
 			Expression where = (in.matchAdvance(WHERE) == null)
 								? null : expr();
+
+			// key: Identifier, value: ASC - true / DESC - false
+			LinkedHashMap<String, Integer> orderings = new LinkedHashMap();
+			if(in.matchAdvance(ORDER) != null) {
+				in.required(BY);
+				do {
+					// ASC is default, check DESC is null
+					orderings.put(in.required(IDENTIFIER), in.matchAdvance(DESC) == null? 1 : -1);
+				} while(in.matchAdvance(COMMA) != null || in.matchAdvance(IDENTIFIER) != null);
+			}
+
 			Table result = doSelect(columns, into,
 								requestedTableNames, where );
+
+			if(orderings.size() > 0) {
+				result.accept(new TableSortVisitor(orderings));
+			}
+
 			return result;
 		}
 		else

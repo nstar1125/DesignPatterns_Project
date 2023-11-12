@@ -78,6 +78,10 @@ import com.holub.tools.ArrayIterator;
 		this.columnNames = (String[]) columnNames.clone();
 	}
 
+	public void accept(TableVisitor visitor) {
+		visitor.visit(this);
+	}
+
 	/**********************************************************************
 	 * Return the index of the named column. Throw an IndexOutOfBoundsException if
 	 * the column doesn't exist.
@@ -215,6 +219,11 @@ import com.holub.tools.ArrayIterator;
 			return ConcreteTable.this.tableName;
 		}
 
+		@Override
+		public LinkedList getRowSet() {
+			return rowSet;
+		}
+
 		public boolean advance() {
 			if (rowIterator.hasNext()) {
 				row = (Object[]) rowIterator.next();
@@ -310,9 +319,14 @@ import com.holub.tools.ArrayIterator;
             return col;
         }
 
-        @Override
-        public int columnCount() {
-            return columnNames.length;
+		@Override
+		public boolean hasColumn(String columnName) {
+			return Arrays.asList(columnNames).contains(columnName);
+		}
+
+		@Override
+        public int columnIndex(String columnName) throws IndexOutOfBoundsException {
+            return indexOf(columnName);
         }
     }
 
