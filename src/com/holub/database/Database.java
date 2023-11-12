@@ -165,7 +165,7 @@ import com.holub.tools.ThrowableContainer;
  *	"id"=identifier, "opt"=optional, "e"=epsilon. "[...]" is
  *	an optional subproduction.
 <PRE>
-statement       ::= 
+statement       ::=
                     INSERT  INTO IDENTIFIER [LP idList RP]
                                       VALUES LP exprList RP
                 |   CREATE  DATABASE IDENTIFIER
@@ -180,7 +180,9 @@ statement       ::=
                                             EQUAL expr WHERE expr
                 |   DELETE  FROM IDENTIFIER WHERE expr
                 |   SELECT  [INTO identifier] idList
-                                        FROM idList [WHERE expr]
+                                        FROM idList [WHERE expr] [ORDER BY ids]
+
+ids 			::= WHITESPACE IDENTIFIER | IDENTIFIER
 
 idList          ::= IDENTIFIER idList' | STAR
 idList'         ::= COMMA IDENTIFIER idList'
@@ -291,7 +293,7 @@ public final class Database
 	 *  from the disk.
 	 */
 	private final class TableMap implements Map
-	{ 		
+	{
 		private final Map realMap;
 		public TableMap( Map realMap ){	this.realMap = realMap; }
 
@@ -324,12 +326,12 @@ public final class Database
 									in.failure( message ).getMessage() );
 			}
 		}
-		
+
 		public Object put(Object key, Object value)
 		{	// If transactions are active, put the new
 			// table into the same transaction state
 			// as the other tables.
-		
+
 			for( int i = 0; i < transactionLevel; ++i )
 				((Table)value).begin();
 
@@ -612,10 +614,10 @@ public final class Database
 	 *  @throws NoSuchElementException if no <code>begin()</code> was issued.
 	 */
 	public void commit() throws ParseFailure
-	{	
+	{
 		assert transactionLevel > 0 : "No begin() for commit()";
 		--transactionLevel;
-		
+
 		try
 		{	Collection currentTables = tables.values();
 			for( Iterator i = currentTables.iterator(); i.hasNext() ;)
@@ -644,7 +646,7 @@ public final class Database
 	}
 	//@transactions-end
 	//@parser-start
-	/******************************************************************* 
+	/*******************************************************************
 	 *  Execute a SQL statement. If an exception is tossed and we are in the
 	 *  middle of a transaction (a begin has been issued but no matching
 	 *  commit has been seen), the transaction is rolled back.
@@ -1194,7 +1196,7 @@ public final class Database
 
 				// Return true if both the left and right sides are instances
 				// of NullValue.
-				boolean isEqual = 
+				boolean isEqual =
 						leftValue.getClass() == rightValue.getClass();
 
 				return new BooleanValue(operator==EQ ? isEqual : !isEqual);
@@ -1310,7 +1312,7 @@ public final class Database
 		{	return value;
 		}
 		public String toString() // round down if the fraction is very small
-		{	
+		{
 			if( Math.abs(value - Math.floor(value)) < 1.0E-20 )
 				return String.valueOf( (long)value );
 			else
@@ -1421,7 +1423,7 @@ public final class Database
 			new Selector.Adapter()
 			{	public boolean approve(Cursor[] tables)
 				{	try
-					{	
+					{
 						Value result = where.evaluate(tables);
 
 						verify( result instanceof BooleanValue,
@@ -1437,7 +1439,7 @@ public final class Database
 		try
 		{	Table result = primary.select(selector, columns, participantsInJoin);
 
-			// If this is a "SELECT INTO <table>" request, remove the 
+			// If this is a "SELECT INTO <table>" request, remove the
 			// returned table from the UnmodifiableTable wrapper, give
 			// it a name, and put it into the tables Map.
 
