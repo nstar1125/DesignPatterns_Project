@@ -2,10 +2,12 @@ package com.holub.database;
 
 import java.util.Iterator;
 
-public interface ReadOnlyCursor extends Iterator {
-    Iterator columns();
+public interface ReadOnlyCursor {
+    Object[][] rows();
 
-    Object column(String columnName);
+    Object[] row(int index);
+
+    Object[] column(String columnName) throws IndexOutOfBoundsException;
 
     int columnCount();
 }
