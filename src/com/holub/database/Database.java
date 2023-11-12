@@ -818,7 +818,7 @@ public final class Database
 			Expression where = (in.matchAdvance(WHERE) == null)
 								? null : expr();
 
-			// key: Identifier, value: ASC - true / DESC - false
+			// key: Identifier, value: 1 (ASC) | -1 (DESC)
 			LinkedHashMap<String, Integer> orderings = new LinkedHashMap();
 			if(in.matchAdvance(ORDER) != null) {
 				in.required(BY);

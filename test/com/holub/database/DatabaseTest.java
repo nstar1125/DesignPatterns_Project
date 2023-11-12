@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseTest {
-
     @Test
     @DisplayName("ReadOnlyCursor 테스트")
     public void testReadOnlyCursor() throws IOException, ParseFailure, IndexOutOfBoundsException {
@@ -42,8 +41,8 @@ public class DatabaseTest {
     }
 
     @Test
-    @DisplayName("order by parsing 테스트")
-    public void testOrderByParse() throws IOException, ParseFailure {
+    @DisplayName("order by 테스트")
+    public void testOrderBy() throws IOException, ParseFailure {
         Database database = new Database("Dbase");
         database.begin();
 
