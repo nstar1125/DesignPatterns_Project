@@ -49,5 +49,13 @@ public class DatabaseTest {
         database.execute("select * from name order by ASC");
         database.execute("select * from name order by addrId, first");
         database.execute("select * from name order by addrId, DESC");
+
+        // parse success
+        database.execute("select * from name order by addrId");
+        database.execute("select * from name order by addrId ASC");
+        database.execute("select * from name order by addrId DESC");
+        database.execute("select * from name order by first ASC addrId DESC");
+        database.execute("select * from name order by first addrId");
+        database.execute("select * from name order by first addrId ASC");
     }
 }
