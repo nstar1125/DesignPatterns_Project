@@ -182,9 +182,12 @@ statement       ::=
                 |   SELECT  [INTO identifier] idList
                                         FROM idList [WHERE expr] [ORDER BY ids]
 
-ids 			::= WHITESPACE ids' |  ids'
-ids'			::= IDENTIFIER  |  IDENTIFIER ordering
-ordering 		::= DESC ASC
+ids 			::= IDENTIFIER ordering ids'
+ids' 			::= COMMA IDENTIFIER ordering ids'
+ 				| e
+
+ordering		::= ASC | DESC
+ 				| e
 
 idList          ::= IDENTIFIER idList' | STAR
 idList'         ::= COMMA IDENTIFIER idList'
@@ -815,9 +818,23 @@ public final class Database
 			Expression where = (in.matchAdvance(WHERE) == null)
 								? null : expr();
 
+			// key: Identifier, value: ASC - true / DESC - false
+			LinkedHashMap<String, Integer> orderings = new LinkedHashMap();
+			if(in.matchAdvance(ORDER) != null) {
+				in.required(BY);
+				do {
+					// ASC is default, check DESC is null
+					orderings.put(in.required(IDENTIFIER), in.matchAdvance(DESC) == null? 1 : -1);
+				} while(in.matchAdvance(COMMA) != null || in.matchAdvance(IDENTIFIER) != null);
+			}
 
 			Table result = doSelect(columns, into,
 								requestedTableNames, where );
+
+			if(orderings.size() > 0) {
+				result.accept(new TableSortVisitor(orderings));
+			}
+
 			return result;
 		}
 		else
