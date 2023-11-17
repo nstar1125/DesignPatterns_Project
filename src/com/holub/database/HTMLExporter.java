@@ -57,7 +57,7 @@ public class HTMLExporter implements Table.Exporter{
             String columnName = columnNames.next().toString();
             out.write(String.format("\t\t\t<th>%s</th>\n", columnName));
         }
-        out.write("\t\t<\tr>\n"); // 행 끝
+        out.write("\t\t</tr>\n"); // 행 끝
     }
 
     @Override
@@ -67,13 +67,13 @@ public class HTMLExporter implements Table.Exporter{
             String dataVal = data.next().toString();
             out.write(String.format("\t\t\t<td>%s</td>\n", dataVal));
         }
-        out.write("\t\t<\tr>\n"); // 행 끝
+        out.write("\t\t</tr>\n"); // 행 끝
     }
 
     @Override
     public void endTable() throws IOException { // HTML 형식 끝
         out.write("\t</table>\n"); //테이블 끝
         out.write("</body>\n");
-        out.write("</html>\n");
+        out.write("</html>");
     }
 }
