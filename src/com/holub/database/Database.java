@@ -822,7 +822,7 @@ public final class Database
 			Table result = doSelect(columns, null,
 					requestedTableNames, where );
 
-//			result.accept(new TableDistinctVisitor());
+			result.accept(new TableDistinctVisitor());
 
 			return result;
 		}

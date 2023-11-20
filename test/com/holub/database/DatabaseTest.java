@@ -90,7 +90,7 @@ public class DatabaseTest {
 
     @Test
     @DisplayName("distinct 테스트")
-    public void testOrderByParse() throws IOException, ParseFailure {
+    public void testDistinctParse() throws IOException, ParseFailure {
         Database database = new Database("Dbase");
         database.begin();
 
@@ -100,8 +100,8 @@ public class DatabaseTest {
 
 
         // parse success
-//        database.execute("select distict name from student");
-//        database.execute("select distict name, age from class");
-//        database.execute("select distict * from class");
+        database.execute("select distinct name from student");
+        database.execute("select distinct name, age from student");
+        database.execute("select distinct * from class");
     }
 }
