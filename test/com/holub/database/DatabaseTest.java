@@ -104,9 +104,32 @@ public class DatabaseTest {
         database.execute("select distinct name, age from student");
         database.execute("select distinct * from class");
 
-//        {
-//            Object[] expected = new Object[]{"frodo", "mike", "kenny"};
-//            assertArrayEquals(expected, database.execute("select last from name2 order by last").readOnlyCursor().column("last"));
-//        }
+        {
+            Object[] expected = new Object[]{"frodo", "mike", "kenny"};
+            System.out.println(database.execute("select distinct name from student"));
+            assertArrayEquals(expected, database.execute("select distinct name from student").readOnlyCursor().column("name"));
+        }
+
+        {
+            Object[] expected = new Object[]{"frodo 20", "mike 21", "kenny 23", "mike 25", "frodo 22"};
+            System.out.println(database.execute("select distinct name, age from student"));
+            assertArrayEquals(expected, database.execute("select distinct name, age from student")
+                    .readOnlyCursor().columns(new String[]{"name", "age"})
+            );
+        }
+
+        {
+            Object[][] expected = new Object[][]{
+                    {"0", "frodo", "20"},
+                    {"1", "mike", "21"},
+                    {"2", "kenny", "23"},
+                    {"3", "mike", "25"},
+                    {"4", "frodo", "22"},
+            };
+            System.out.println(database.execute("select distinct name, age from student"));
+            assertArrayEquals(expected, database.execute("select distinct * from student")
+                    .readOnlyCursor().rows()
+            );
+        }
     }
 }
