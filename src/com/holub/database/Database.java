@@ -413,6 +413,7 @@ public final class Database
 		BY  		= tokens.create( "'BY"		),
 		ASC  		= tokens.create( "'ASC"		),
 		DESC  		= tokens.create( "'DESC"	),
+		DISTINCT	= tokens.create( "'DISTINCT"),
 		WORK		= tokens.create( "WORK|TRAN(SACTION)?"		),
 		ADDITIVE	= tokens.create( "\\+|-" 					),
 		STRING		= tokens.create( "(\".*?\")|('.*?')"		),
