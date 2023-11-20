@@ -3,9 +3,11 @@ package com.holub.database;
 import java.io.IOException;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,10 +54,15 @@ public class XMLImporter implements Table.Importer
     private final NodeList rows;
     private int curRowIdx;
 
-    public XMLImporter(Reader in) throws Exception {
+    public XMLImporter(Reader in) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        this.doc = builder.parse(new InputSource(in));
+        DocumentBuilder builder;
+        try {
+            builder = factory.newDocumentBuilder();
+            this.doc = builder.parse(new InputSource(in));
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
         root = doc.getDocumentElement();
         rows = root.getElementsByTagName("ROW");
         curRowIdx = 0;
