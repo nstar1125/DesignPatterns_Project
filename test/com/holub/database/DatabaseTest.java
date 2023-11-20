@@ -95,13 +95,18 @@ public class DatabaseTest {
         database.begin();
 
         // parse fail
-        assertThrows(ParseFailure.class, () -> database.execute("select distict * from student, class"));
-        assertThrows(ParseFailure.class, () -> database.execute("select distict * from student class"));
+        assertThrows(ParseFailure.class, () -> database.execute("select distnct * from student"));
+        assertThrows(IndexOutOfBoundsException.class, () -> database.execute("select distinct agge from student"));
 
 
         // parse success
         database.execute("select distinct name from student");
         database.execute("select distinct name, age from student");
         database.execute("select distinct * from class");
+
+//        {
+//            Object[] expected = new Object[]{"frodo", "mike", "kenny"};
+//            assertArrayEquals(expected, database.execute("select last from name2 order by last").readOnlyCursor().column("last"));
+//        }
     }
 }
