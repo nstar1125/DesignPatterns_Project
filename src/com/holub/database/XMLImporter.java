@@ -2,11 +2,11 @@ package com.holub.database;
 
 import java.io.IOException;
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -39,8 +39,6 @@ import java.util.Iterator;
  *	identifies the columns, and the sibling value define
  *	the rows.
  *
- * @include /etc/license.txt
- *
  * @see Table
  * @see Table.Importer
 // * @see XMLExporter
@@ -48,22 +46,23 @@ import java.util.Iterator;
 
 public class XMLImporter implements Table.Importer
 {
-    private final Document doc;
     private final ArrayList<String> columnNames = new ArrayList<>();
-    private String tableName;
-    int rowIdx = 0;
+    private final Document doc;
+    private final Element root;
+    private final NodeList rows;
+    private int curRowIdx;
 
-    public XMLImporter(String in) throws ParserConfigurationException, IOException, SAXException {
+    public XMLImporter(Reader in) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        this.doc = builder.parse(in);
-        doc.getDocumentElement().normalize();
+        this.doc = builder.parse(new InputSource(in));
+        root = doc.getDocumentElement();
+        rows = root.getElementsByTagName("ROW");
+        curRowIdx = 0;
     }
 
     @Override
     public void startTable() throws IOException {
-        Element root = doc.getDocumentElement();
-        tableName = root.getNodeName();
         Node node = root.getFirstChild().getNextSibling();
         NodeList childNodes = node.getChildNodes();
         for(int i = 0; i < childNodes.getLength(); i++) {
@@ -76,7 +75,7 @@ public class XMLImporter implements Table.Importer
 
     @Override
     public String loadTableName() {
-        return tableName;
+        return root.getNodeName();
     }
 
     @Override
@@ -91,18 +90,16 @@ public class XMLImporter implements Table.Importer
 
     @Override
     public Iterator loadRow() {
-        Node node = doc.getElementsByTagName("ROW").item(rowIdx);
-        if (node != null)
-        {
+        if (curRowIdx < rows.getLength()) {
+            NodeList data = rows.item(curRowIdx).getChildNodes();
+            curRowIdx++;
             ArrayList<String> rowList = new ArrayList<>();
-            NodeList data = node.getChildNodes();
             for (int j = 0; j < data.getLength(); j++) {
                 Node rowNode = data.item(j);
                 if (rowNode.getNodeType() == Node.ELEMENT_NODE) {
                     rowList.add(rowNode.getTextContent());
                 }
             }
-            rowIdx++;
             return rowList.iterator();
         }
         return null;
