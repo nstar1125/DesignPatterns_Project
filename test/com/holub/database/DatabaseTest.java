@@ -87,4 +87,21 @@ public class DatabaseTest {
             assertArrayEquals(expected, database.execute("select * from name3 order by addrId DESC, last ASC").readOnlyCursor().rows());
         }
     }
+
+    @Test
+    @DisplayName("distinct 테스트")
+    public void testOrderByParse() throws IOException, ParseFailure {
+        Database database = new Database("Dbase");
+        database.begin();
+
+        // parse fail
+        assertThrows(ParseFailure.class, () -> database.execute("select distict * from student, class"));
+        assertThrows(ParseFailure.class, () -> database.execute("select distict * from student class"));
+
+
+        // parse success
+//        database.execute("select distict name from student");
+//        database.execute("select distict name, age from class");
+//        database.execute("select distict * from class");
+    }
 }
