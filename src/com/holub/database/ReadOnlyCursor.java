@@ -7,6 +7,8 @@ public interface ReadOnlyCursor {
 
     Object[] column(String columnName) throws IndexOutOfBoundsException;
 
+    Object[] columns(String[] columnNames) throws IndexOutOfBoundsException;
+
     boolean hasColumn(String columnName);
 
     int columnIndex(String columnName) throws IndexOutOfBoundsException;
