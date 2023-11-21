@@ -320,6 +320,32 @@ import com.holub.tools.ArrayIterator;
         }
 
 		@Override
+		public Object[] columns(String[] columnNames) throws IndexOutOfBoundsException {
+			List<Integer> colIds = new ArrayList<>();
+
+			for (String columnName : columnNames) {
+				colIds.add(indexOf(columnName));
+			}
+
+			Object[] col = new Object[rowSet.size()];
+
+			for (int i = 0; i < rowSet.size(); i++) {
+				Object[] row = row(i);
+				StringBuilder sb = new StringBuilder();
+				for (int j = 0; j < colIds.size(); j++) {
+					sb.append(row[colIds.get(j)]);
+
+					if (j != colIds.size() - 1) {
+						sb.append(" ");
+					}
+				}
+				col[i] = sb.toString();
+			}
+
+			return col;
+		}
+
+		@Override
 		public boolean hasColumn(String columnName) {
 			return Arrays.asList(columnNames).contains(columnName);
 		}
