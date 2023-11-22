@@ -806,35 +806,34 @@ public final class Database
 			in.required( WHERE );
 			affectedRows = doDelete( tableName, expr() );
 		}
-		else if( in.matchAdvance(SELECT) != null && in.matchAdvance(DISTINCT) != null) {
-			List columns = idList();
-
-			if( in.matchAdvance(INTO) != null ) {
-				return null;
-			}
-
-			in.required( FROM );
-			List requestedTableNames = idList();
-
-			Expression where = (in.matchAdvance(WHERE) == null)
-					? null : expr();
-
-			Table result = doSelect(columns, null,
-					requestedTableNames, where );
-
-			result.accept(new TableDistinctVisitor());
-
-			return result;
-		}
 		else if( in.matchAdvance(SELECT) != null )
 		{
+			if (in.matchAdvance(DISTINCT) != null) {
+				List columns = idList();
+
+				if( in.matchAdvance(INTO) != null ) {
+					return null;
+				}
+
+				in.required( FROM );
+				List requestedTableNames = idList();
+
+				Expression where = (in.matchAdvance(WHERE) == null)
+						? null : expr();
+
+				Table result = doSelect(columns, null,
+						requestedTableNames, where );
+
+				result.accept(new TableDistinctVisitor());
+
+				return result;
+			}
+
 			List columns = idList();
 
 			String into = null;
 			if( in.matchAdvance(INTO) != null )
 				into = in.required(IDENTIFIER);
-
-
 
 			in.required( FROM );
 			List requestedTableNames = idList();
