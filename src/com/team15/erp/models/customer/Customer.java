@@ -1,4 +1,6 @@
-package com.team15.erp.customer;
+package com.team15.erp.models.customer;
+
+import com.team15.erp.models.DbConnection;
 
 public class Customer {
 

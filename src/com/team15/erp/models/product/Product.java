@@ -1,4 +1,4 @@
-package com.team15.erp.product;
+package com.team15.erp.models.product;
 
 public abstract class Product {
 

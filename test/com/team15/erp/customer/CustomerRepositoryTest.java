@@ -3,6 +3,8 @@ package com.team15.erp.customer;
 import com.holub.database.Database;
 import com.holub.database.Table;
 import com.holub.text.ParseFailure;
+import com.team15.erp.models.customer.Customer;
+import com.team15.erp.models.customer.CustomerRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
