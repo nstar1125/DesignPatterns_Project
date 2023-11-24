@@ -1,7 +1,5 @@
 package com.team15.erp.models.customer;
 
-import com.team15.erp.models.DbConnection;
-
 public class Customer {
 
     private static final String DEFAULT_NAME = "default name";
