@@ -1,4 +1,4 @@
-package com.holub.application.customer;
+package com.team15.erp.customer;
 
 import com.holub.database.ReadOnlyCursor;
 import com.holub.database.Table;

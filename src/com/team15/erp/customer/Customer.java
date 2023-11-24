@@ -1,4 +1,4 @@
-package com.holub.application.customer;
+package com.team15.erp.customer;
 
 public class Customer {
 
@@ -43,6 +43,7 @@ public class Customer {
         String id = "0";
         String name = DEFAULT_NAME;
         String address = DEFAULT_ADDRESS;
+
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
                 id = (String) row[i];
