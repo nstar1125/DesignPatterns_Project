@@ -38,4 +38,23 @@ public class Customer {
     public void setAddress(final String address) {
         this.address = address;
     }
+
+    public static Customer toCustomer(final Object[] row, final String[] columnNames) {
+        String id = "0";
+        String name = DEFAULT_NAME;
+        String address = DEFAULT_ADDRESS;
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNames[i].equals("id")) {
+                id = (String) row[i];
+            }
+            if (columnNames[i].equals("name")) {
+                name = (String) row[i];
+            }
+            if (columnNames[i].equals("address")) {
+                address = (String) row[i];
+            }
+        }
+
+        return new Customer(id, name, address);
+    }
 }
