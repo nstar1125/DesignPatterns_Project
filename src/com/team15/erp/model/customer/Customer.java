@@ -1,4 +1,4 @@
-package com.team15.erp.models.customer;
+package com.team15.erp.model.customer;
 
 public class Customer {
 

@@ -1,4 +1,4 @@
-package com.team15.erp.models;
+package com.team15.erp.model;
 
 import com.holub.database.Database;
 import com.holub.database.Table;

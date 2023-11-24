@@ -1,4 +1,4 @@
-package com.team15.erp.models.product;
+package com.team15.erp.model.product;
 
 public class Shoes extends Product {
 

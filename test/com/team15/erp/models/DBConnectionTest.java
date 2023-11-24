@@ -1,7 +1,7 @@
 package com.team15.erp.models;
 
-import com.holub.database.Table;
 import com.holub.text.ParseFailure;
+import com.team15.erp.model.DBConnection;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
