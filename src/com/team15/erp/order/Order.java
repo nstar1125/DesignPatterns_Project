@@ -1,6 +1,5 @@
-package com.holub.application.order;
+package com.team15.erp.order;
 
-import com.holub.application.product.Product;
 import java.util.List;
 
 public class Order {

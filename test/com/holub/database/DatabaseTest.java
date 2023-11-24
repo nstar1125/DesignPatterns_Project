@@ -1,12 +1,10 @@
 package com.holub.database;
 
-import com.holub.application.customer.Customer;
-import com.holub.application.customer.CustomerRepository;
+import com.team15.erp.customer.CustomerRepository;
 import com.holub.text.ParseFailure;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -138,37 +136,5 @@ public class DatabaseTest {
                     .readOnlyCursor().rows()
             );
         }
-    }
-
-    @Test
-    @DisplayName("Customer 조회 테스트")
-    public void getCustomerTest() throws IOException, ParseFailure {
-        Database database = new Database("Dbase");
-        database.begin();
-        CustomerRepository customerRepository = new CustomerRepository();
-
-        // parse success
-//        database.execute("select distinct name from student");
-//        database.execute("select distinct name, age from student");
-        Table table = database.execute("select distinct * from customer");
-        List<Customer> customers = customerRepository.findCustomer(table, new String[]{"id", "name", "address"});
-
-        String[] ids = new String[customers.size()];
-        String[] names = new String[customers.size()];
-        String[] addresses = new String[customers.size()];
-        for (int i = 0; i < customers.size(); i++) {
-            ids[i] = customers.get(i).getId();
-            names[i] = customers.get(i).getName();
-            addresses[i] = customers.get(i).getAddress();
-        }
-
-        String[] expectedIds = new String[] {"0", "1", "2", "3"};
-        String[] expectedNames = new String[] {"frodo", "mike", "kenny", "cris"};
-        String[] expectedAddresses= new String[] {"seoul", "seoul", "busan", "deajeon"};
-
-        assertEquals(customers.size(), customers.size());
-        assertArrayEquals(ids, expectedIds);
-        assertArrayEquals(names, expectedNames);
-        assertArrayEquals(addresses, expectedAddresses);
     }
 }

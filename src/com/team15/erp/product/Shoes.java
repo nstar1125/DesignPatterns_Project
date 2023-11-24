@@ -1,4 +1,4 @@
-package com.holub.application.product;
+package com.team15.erp.product;
 
 public class Shoes extends Product {
 
