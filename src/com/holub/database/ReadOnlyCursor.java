@@ -12,4 +12,6 @@ public interface ReadOnlyCursor {
     boolean hasColumn(String columnName);
 
     int columnIndex(String columnName) throws IndexOutOfBoundsException;
+
+    String[] columnNames();
 }
