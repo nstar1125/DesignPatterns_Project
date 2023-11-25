@@ -1,48 +1,31 @@
 package com.team15.erp.model.customer;
 
-public class Customer {
+import com.holub.database.ReadOnlyCursor;
+import com.holub.text.ParseFailure;
+import com.team15.erp.model.Mapper;
 
-    private static final String DEFAULT_NAME = "default name";
-    private static final String DEFAULT_ADDRESS = "default address";
+import java.io.IOException;
+import java.util.ArrayList;
 
-    private String id;
-    private String name;
-    private String address;
+public class Customer extends Mapper {
 
-    public Customer(final String id, final String name, final String address) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
+    public ArrayList<CustomerScheme> getAllCustomers() throws IOException, ParseFailure {
+        ArrayList<CustomerScheme> customers = new ArrayList<>();
+
+        ReadOnlyCursor customer = this.dbConnection.query("select distinct * from customer").readOnlyCursor();
+
+        for (Object[] row: customer.rows()) {
+            customers.add((CustomerScheme) map(row, customer.columnNames()));
+        }
+
+        return customers;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(final String address) {
-        this.address = address;
-    }
-
-    public static Customer toCustomer(final Object[] row, final String[] columnNames) {
+    @Override
+    protected Object map(Object[] row, String[] columnNames) {
         String id = "0";
-        String name = DEFAULT_NAME;
-        String address = DEFAULT_ADDRESS;
+        String name = NULL;
+        String address = NULL;
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
@@ -56,6 +39,6 @@ public class Customer {
             }
         }
 
-        return new Customer(id, name, address);
+        return new CustomerScheme(id, name, address);
     }
 }
