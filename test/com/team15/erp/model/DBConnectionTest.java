@@ -1,7 +1,5 @@
-package com.team15.erp.models;
+package com.team15.erp.model;
 
-import com.holub.text.ParseFailure;
-import com.team15.erp.model.DBConnection;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,12 +18,12 @@ public class DBConnectionTest {
 
     @Test
     @DisplayName("DBase query 테스트")
-    public void TestQueryDBase() throws IOException, ParseFailure {
+    public void TestQueryDBase() {
         DBConnection dbConnection = DBConnection.getInstance();
 
         Assertions.assertDoesNotThrow(() -> {
             dbConnection.initialize("DBase");
-            dbConnection.execute("select distinct * from customer");
+            dbConnection.query("select distinct * from customer");
         });
     }
 }

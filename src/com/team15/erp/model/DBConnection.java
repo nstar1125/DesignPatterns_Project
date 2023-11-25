@@ -7,6 +7,7 @@ import com.holub.text.ParseFailure;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 
 public class DBConnection {
     Database database;
@@ -24,20 +25,27 @@ public class DBConnection {
 
     public void initialize(URI directory) throws IOException {
         this.database = new Database(directory);
-        this.database.begin();
     }
 
     public void initialize(File path) throws IOException {
         this.database = new Database(path);
-        this.database.begin();
     }
 
     public void initialize(String path) throws IOException {
         this.database = new Database(path);
-        this.database.begin();
     }
 
-    public Table execute(String expr) throws IOException, ParseFailure {
-        return this.database.execute(expr);
+    public Table query(String query) throws IOException, ParseFailure {
+        return this.database.execute(query);
+    }
+
+    public void transaction(ArrayList<String> queries) throws IOException, ParseFailure {
+        this.database.begin();
+
+        for(String query: queries) {
+            this.database.execute(query);
+        }
+
+        this.database.commit();
     }
 }
