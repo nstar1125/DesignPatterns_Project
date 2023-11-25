@@ -2,6 +2,8 @@ package com.team15.erp.activity;
 
 import com.team15.erp.activity.fulfilling.Fulfilling;
 
+import java.util.InputMismatchException;
+
 public class Entry<Option> extends Activity<Option> {
     @Override
     public void before() {
@@ -26,12 +28,12 @@ public class Entry<Option> extends Activity<Option> {
     }
 
     @Override
-    public Object scanOption() {
+    public Object scanOption() throws InputMismatchException {
         return scanner.nextInt();
     }
 
     @Override
-    public void perform(Option option) {
+    public void perform(Option option) throws Exception {
         switch ((Integer) option) {
             case 0:
                 System.out.println("프로그램을 종료합니다.");
