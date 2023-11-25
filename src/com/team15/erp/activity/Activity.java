@@ -24,7 +24,7 @@ public abstract class Activity<Option> implements Cli {
                 this.perform(option);
                 break;
             } catch (Exception e) {
-                System.out.println("잘못된 옵션입니다. 다시 입력해주세요\n");
+                System.out.println("오류가 발생했습니다. " + e + "\n");
             }
         }
     }
