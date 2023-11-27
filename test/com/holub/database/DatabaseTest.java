@@ -1,9 +1,6 @@
 package com.holub.database;
 
-import com.team15.erp.customer.CustomerRepository;
 import com.holub.text.ParseFailure;
-
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;

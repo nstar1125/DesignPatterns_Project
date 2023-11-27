@@ -354,7 +354,11 @@ import com.holub.tools.ArrayIterator;
         public int columnIndex(String columnName) throws IndexOutOfBoundsException {
             return indexOf(columnName);
         }
-    }
+
+		public String[] columnNames() {
+			return columnNames;
+		}
+	}
 
 	// @read_only_cursor-end
 	// ----------------------------------------------------------------------

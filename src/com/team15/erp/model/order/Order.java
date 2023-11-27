@@ -1,4 +1,4 @@
-package com.team15.erp.order;
+package com.team15.erp.model.order;
 
 import java.util.List;
 
