@@ -77,4 +77,9 @@ public class Book extends Mapper {
                 status
         );
     }
+
+    @Override
+    public void accept(ProductVisitor visitor) {
+        visitor.visitBook(this);
+    }
 }
