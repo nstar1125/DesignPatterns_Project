@@ -1,23 +1,25 @@
 package com.team15.erp.dto.product;
 
+import java.time.ZonedDateTime;
+
 public abstract class ProductDto {
 
-    private String id;
+    private Long id;
     private String productType;
     private String productName;
-    private String price;
-    private String storeAt;
-    private String releaseAt;
-    private String isSale;
+    private Integer price;
+    private ZonedDateTime storeAt;
+    private ZonedDateTime releaseAt;
+    private String status;
 
     public ProductDto(
-            final String id,
+            final Long id,
             final String productType,
             final String productName,
-            final String price,
-            final String storeAt,
-            final String releaseAt,
-            final String isSale
+            final Integer price,
+            final ZonedDateTime storeAt,
+            final ZonedDateTime releaseAt,
+            final String status
     ) {
         this.id = id;
         this.productType = productType;
@@ -25,10 +27,10 @@ public abstract class ProductDto {
         this.price = price;
         this.storeAt = storeAt;
         this.releaseAt = releaseAt;
-        this.isSale = isSale;
+        this.status = status;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -40,19 +42,19 @@ public abstract class ProductDto {
         return productName;
     }
 
-    public String getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public String getStoreAt() {
+    public ZonedDateTime getStoreAt() {
         return storeAt;
     }
 
-    public String getReleaseAt() {
+    public ZonedDateTime getReleaseAt() {
         return releaseAt;
     }
 
     public String getIsSale() {
-        return isSale;
+        return status;
     }
 }

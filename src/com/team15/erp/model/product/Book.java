@@ -3,16 +3,19 @@ package com.team15.erp.model.product;
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
 import com.team15.erp.dto.product.BookDto;
+import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.model.Mapper;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 public class Book extends Mapper {
 
-    public ArrayList<BookDto> getAllCustomers() throws IOException, ParseFailure {
+    public ArrayList<BookDto> getAllBooks() throws IOException, ParseFailure {
         ArrayList<BookDto> bookDtos = new ArrayList<>();
 
+        this.dbConnection.initialize("/Users/sonmingyu/학교자료/설계패턴/HolubSQL/src/com/holub/database/Dbase");
         ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
 
         for (Object[] row: book.rows()) {
@@ -24,40 +27,40 @@ public class Book extends Mapper {
 
     @Override
     protected Object map(final Object[] row, final String[] columnNames) {
-        String id = "0";
+        Long id = 0L;
         String productType = ProductType.BOOK.getProductType();
         String productName = NULL;
-        String price = NULL;
+        Integer price = 0;
         String writer = NULL;
-        String numberOfPage = NULL;
-        String storeAt = NULL;
-        String releaseAt = NULL;
-        String isSale = NULL;
+        Integer numberOfPage = 0;
+        ZonedDateTime storeAt = null;
+        ZonedDateTime releaseAt = null;
+        String status = ProductStatus.SALE.getProductStatus();
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
-                id = (String) row[i];
+                id = (Long) row[i];
             }
             if (columnNames[i].equals("product_name")) {
                 productName = (String) row[i];
             }
             if (columnNames[i].equals("price")) {
-                price = (String) row[i];
+                price = (Integer) row[i];
             }
             if (columnNames[i].equals("writer")) {
                 writer = (String) row[i];
             }
             if (columnNames[i].equals("number_of_page")) {
-                numberOfPage = (String) row[i];
+                numberOfPage = (Integer) row[i];
             }
             if (columnNames[i].equals("store_at")) {
-                storeAt = (String) row[i];
+                storeAt = (ZonedDateTime) row[i];
             }
             if (columnNames[i].equals("release_at")) {
-                releaseAt = (String) row[i];
+                releaseAt = (ZonedDateTime) row[i];
             }
-            if (columnNames[i].equals("is_sale")) {
-                isSale = (String) row[i];
+            if (columnNames[i].equals("status")) {
+                status = (String) row[i];
             }
         }
 
@@ -70,7 +73,7 @@ public class Book extends Mapper {
                 numberOfPage,
                 storeAt,
                 releaseAt,
-                isSale
+                status
         );
     }
 }

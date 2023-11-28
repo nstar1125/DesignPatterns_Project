@@ -3,15 +3,17 @@ package com.team15.erp.model.product;
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
 import com.team15.erp.dto.product.BookDto;
+import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.dto.product.ShoesDto;
 import com.team15.erp.model.Mapper;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 public class Shoes extends Mapper {
 
-    public ArrayList<ShoesDto> getAllCustomers() throws IOException, ParseFailure {
+    public ArrayList<ShoesDto> getAllShoes() throws IOException, ParseFailure {
         ArrayList<ShoesDto> shoesDtos = new ArrayList<>();
 
         ReadOnlyCursor shoes = this.dbConnection.query("select distinct * from shoes").readOnlyCursor();
@@ -25,40 +27,40 @@ public class Shoes extends Mapper {
 
     @Override
     protected Object map(final Object[] row, final String[] columnNames) {
-        String id = "0";
+        Long id = 0L;
         String productType = ProductType.SHOES.getProductType();
         String productName = NULL;
-        String price = NULL;
-        String size = NULL;
+        Integer price = 0;
+        Integer size = 0;
         String brand = NULL;
-        String storeAt = NULL;
-        String releaseAt = NULL;
-        String isSale = NULL;
+        ZonedDateTime storeAt = null;
+        ZonedDateTime releaseAt = null;
+        String status = ProductStatus.SALE.getProductStatus();
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
-                id = (String) row[i];
+                id = (Long) row[i];
             }
             if (columnNames[i].equals("product_name")) {
                 productName = (String) row[i];
             }
             if (columnNames[i].equals("price")) {
-                price = (String) row[i];
+                price = (Integer) row[i];
             }
             if (columnNames[i].equals("size")) {
-                size = (String) row[i];
+                size = (Integer) row[i];
             }
             if (columnNames[i].equals("brand")) {
                 brand = (String) row[i];
             }
             if (columnNames[i].equals("store_at")) {
-                storeAt = (String) row[i];
+                storeAt = (ZonedDateTime) row[i];
             }
             if (columnNames[i].equals("release_at")) {
-                releaseAt = (String) row[i];
+                releaseAt = (ZonedDateTime) row[i];
             }
-            if (columnNames[i].equals("is_sale")) {
-                isSale = (String) row[i];
+            if (columnNames[i].equals("status")) {
+                status = (String) row[i];
             }
         }
 
@@ -71,7 +73,7 @@ public class Shoes extends Mapper {
                 brand,
                 storeAt,
                 releaseAt,
-                isSale
+                status
         );
     }
 }
