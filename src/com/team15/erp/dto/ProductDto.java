@@ -1,10 +1,10 @@
-package com.team15.erp.scheme;
+package com.team15.erp.dto;
 
-public abstract class Product {
+public abstract class ProductDto {
     private String productName;
     private Integer price;
 
-    public Product(String productName, Integer price) {
+    public ProductDto(String productName, Integer price) {
         this.productName = productName;
         this.price = price;
     }

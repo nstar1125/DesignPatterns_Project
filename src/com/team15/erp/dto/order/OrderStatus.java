@@ -1,4 +1,4 @@
-package com.team15.erp.scheme.order;
+package com.team15.erp.dto.order;
 
 public enum OrderStatus {
 

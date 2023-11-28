@@ -1,9 +1,9 @@
-package com.team15.erp.scheme;
+package com.team15.erp.dto;
 
-public class Book extends Product {
+public class BookDto extends ProductDto {
     private String writer;
     private Integer numberOfPage;
-    public Book(String productName, Integer price, String writer, Integer numberOfPage) {
+    public BookDto(String productName, Integer price, String writer, Integer numberOfPage) {
         super(productName, price);
         this.writer = writer;
         this.numberOfPage = numberOfPage;

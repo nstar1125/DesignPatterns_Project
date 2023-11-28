@@ -1,9 +1,9 @@
-package com.team15.erp.scheme.order;
+package com.team15.erp.dto.order;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class Order {
+public class OrderDto {
 
     private String id;
     private String customerId;
@@ -11,7 +11,7 @@ public class Order {
     private String orderStatus;
     private List<HashMap<String, String>> orderProductIds;
 
-    public Order(
+    public OrderDto(
             final String id,
             final String customerId,
             final String orderDate,
