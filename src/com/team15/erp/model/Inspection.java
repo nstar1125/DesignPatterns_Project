@@ -1,6 +1,6 @@
 package com.team15.erp.model;
 
-import com.team15.erp.dto.ProductDto;
+import com.team15.erp.dto.product.ProductDto;
 import com.team15.erp.model.product.ProductFactory;
 
 import java.util.ArrayList;
