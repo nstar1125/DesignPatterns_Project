@@ -2,6 +2,7 @@ package com.team15.erp.activity;
 
 import com.team15.erp.activity.fulfilling.Fulfilling;
 
+import com.team15.erp.activity.order.OrderActivity;
 import java.util.InputMismatchException;
 
 public class Entry<Option> extends Activity<Option> {
@@ -24,6 +25,7 @@ public class Entry<Option> extends Activity<Option> {
         System.out.println("0: 종료");
         System.out.println("1: 입고");
         System.out.println("2: 출고");
+        System.out.println("3: 주문");
         System.out.print("> ");
     }
 
@@ -43,6 +45,9 @@ public class Entry<Option> extends Activity<Option> {
                 new Fulfilling<String>();
                 break;
             case 2:
+                break;
+            case 3:
+                new OrderActivity<String>();
                 break;
         }
     }

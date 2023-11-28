@@ -15,7 +15,7 @@ public class Book extends Mapper {
     public ArrayList<BookDto> getAllBooks() throws IOException, ParseFailure {
         ArrayList<BookDto> bookDtos = new ArrayList<>();
 
-        this.dbConnection.initialize("/Users/sonmingyu/학교자료/설계패턴/HolubSQL/src/com/holub/database/Dbase");
+        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
         ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
 
         for (Object[] row: book.rows()) {

@@ -1,8 +1,10 @@
 package com.team15.erp.model.order;
 
 import com.holub.database.ReadOnlyCursor;
+import com.holub.database.Table;
 import com.holub.text.ParseFailure;
-import com.team15.erp.dto.order.OrderDto;
+import com.team15.erp.dto.order.OrderStatus;
+import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.model.Mapper;
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -10,19 +12,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Order extends Mapper {
+public class Orders extends Mapper {
 
-    public ArrayList<OrderDto> getAllOrders() throws IOException, ParseFailure {
-        ArrayList<OrderDto> orderDtos = new ArrayList<>();
+    public ArrayList<OrdersDto> getAllOrders() throws IOException, ParseFailure {
+        ArrayList<OrdersDto> ordersDtos = new ArrayList<>();
 
         this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
         ReadOnlyCursor order = this.dbConnection.query("select distinct * from order").readOnlyCursor();
 
         for (Object[] row: order.rows()) {
-            orderDtos.add((OrderDto) map(row, order.columnNames()));
+            ordersDtos.add((OrdersDto) map(row, order.columnNames()));
         }
 
-        return orderDtos;
+        return ordersDtos;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class Order extends Mapper {
             }
         }
 
-        return new OrderDto(
+        return new OrdersDto(
                 id,
                 customerId,
                 orderDate,
@@ -74,5 +76,20 @@ public class Order extends Mapper {
         }
 
         return orderProductIds;
+    }
+
+    public int getOrderTableSize() throws IOException, ParseFailure {
+        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
+        return this.dbConnection.query("select * from orders").readOnlyCursor().rows().length;
+    }
+
+    public Table selectOrderTable() throws IOException, ParseFailure {
+        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
+        return this.dbConnection.query("select * from orders");
+    }
+
+    public void insertOrder(final Object[] infos) throws IOException, ParseFailure {
+        String query = String.format("insert into orders VALUES ('%d', '%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3], infos[4]);
+        this.dbConnection.query(query);
     }
 }

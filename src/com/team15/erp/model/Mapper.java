@@ -7,6 +7,7 @@ import java.util.TimeZone;
 public abstract class Mapper<T> {
     public final String NULL = "NULL";
     private static final String DEFAULT_DATE_TIME = "0001-01-01 00:00:00";
+    protected static final String DEFAULT_FILE_ROUTE = "/Users/sonmingyu/학교자료/설계패턴/HolubSQL/src/com/holub/database/Dbase";
     protected DBConnection dbConnection = DBConnection.getInstance();
 
     protected abstract T map(final Object[] row, final String[] columnNames);

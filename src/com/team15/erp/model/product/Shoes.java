@@ -15,6 +15,7 @@ public class Shoes extends Mapper {
     public ArrayList<ShoesDto> getAllShoes() throws IOException, ParseFailure {
         ArrayList<ShoesDto> shoesDtos = new ArrayList<>();
 
+        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
         ReadOnlyCursor shoes = this.dbConnection.query("select distinct * from shoes").readOnlyCursor();
 
         for (Object[] row: shoes.rows()) {
