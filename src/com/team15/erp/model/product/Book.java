@@ -1,23 +1,79 @@
 package com.team15.erp.model.product;
 
-public class Book extends Product {
+import com.holub.database.ReadOnlyCursor;
+import com.holub.text.ParseFailure;
+import com.team15.erp.dto.product.BookDto;
+import com.team15.erp.dto.product.ProductStatus;
+import com.team15.erp.dto.product.ProductType;
+import com.team15.erp.model.Mapper;
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
-    private String writer;
-    private String numberOfPage;
+public class Book extends Mapper {
 
-    public String getWriter() {
-        return writer;
+    public ArrayList<BookDto> getAllBooks() throws IOException, ParseFailure {
+        ArrayList<BookDto> bookDtos = new ArrayList<>();
+
+        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
+        ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
+
+        for (Object[] row: book.rows()) {
+            bookDtos.add((BookDto) map(row, book.columnNames()));
+        }
+
+        return bookDtos;
     }
 
-    public void setWriter(final String writer) {
-        this.writer = writer;
-    }
+    @Override
+    protected Object map(final Object[] row, final String[] columnNames) {
+        Long id = 0L;
+        String productType = ProductType.BOOK.getProductType();
+        String productName = NULL;
+        Integer price = 0;
+        String writer = NULL;
+        Integer numberOfPage = 0;
+        ZonedDateTime storeAt = null;
+        ZonedDateTime releaseAt = null;
+        String status = ProductStatus.SALE.getProductStatus();
 
-    public String getNumberOfPage() {
-        return numberOfPage;
-    }
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNames[i].equals("id")) {
+                id = Long.valueOf((String) row[i]) ;
+            }
+            if (columnNames[i].equals("product_name")) {
+                productName = (String) row[i];
+            }
+            if (columnNames[i].equals("price")) {
+                price = Integer.parseInt((String) row[i]);
+            }
+            if (columnNames[i].equals("writer")) {
+                writer = (String) row[i];
+            }
+            if (columnNames[i].equals("number_of_page")) {
+                numberOfPage = Integer.parseInt((String) row[i]);
+            }
+            if (columnNames[i].equals("store_at")) {
+                storeAt = toZonedDateTime((String) row[i]);
+            }
+            if (columnNames[i].equals("release_at")) {
+                releaseAt = toZonedDateTime((String) row[i]);
+            }
+            if (columnNames[i].equals("status")) {
+                status = (String) row[i];
+            }
+        }
 
-    public void setNumberOfPage(final String numberOfPage) {
-        this.numberOfPage = numberOfPage;
+        return new BookDto(
+                id,
+                productType,
+                productName,
+                price,
+                writer,
+                numberOfPage,
+                storeAt,
+                releaseAt,
+                status
+        );
     }
 }

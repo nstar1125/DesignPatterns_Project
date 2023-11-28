@@ -2,7 +2,7 @@ package com.team15.erp.activity.fulfilling;
 
 import com.team15.erp.activity.Activity;
 import com.team15.erp.model.Inspection;
-import com.team15.erp.dto.ProductDto;
+import com.team15.erp.dto.product.ProductDto;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
