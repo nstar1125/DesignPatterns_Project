@@ -2,7 +2,7 @@ package com.team15.erp.activity.fulfilling;
 
 import com.team15.erp.activity.Activity;
 import com.team15.erp.model.Inspection;
-import com.team15.erp.scheme.Product;
+import com.team15.erp.dto.ProductDto;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,8 +31,8 @@ public class Fulfilling<Option> extends Activity<Option> {
     public void perform(Option o) throws Exception {
         List<String> fulfillingOrder = Files.readAllLines(Paths.get((String) o));
 
-        ArrayList<Product> incomingProducts = new Inspection().inspect(fulfillingOrder);
-        System.out.println(incomingProducts);
+        ArrayList<ProductDto> incomingProductDtos = new Inspection().inspect(fulfillingOrder);
+        System.out.println(incomingProductDtos);
 
         //TODO: pipeline another activity here
     }

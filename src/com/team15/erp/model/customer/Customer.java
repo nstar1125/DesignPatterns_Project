@@ -2,6 +2,7 @@ package com.team15.erp.model.customer;
 
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
+import com.team15.erp.dto.customer.CustomerDto;
 import com.team15.erp.model.Mapper;
 
 import java.io.IOException;
@@ -9,16 +10,16 @@ import java.util.ArrayList;
 
 public class Customer extends Mapper {
 
-    public ArrayList<CustomerScheme> getAllCustomers() throws IOException, ParseFailure {
-        ArrayList<CustomerScheme> customers = new ArrayList<>();
+    public ArrayList<CustomerDto> getAllCustomers() throws IOException, ParseFailure {
+        ArrayList<CustomerDto> customerDtos = new ArrayList<>();
 
         ReadOnlyCursor customer = this.dbConnection.query("select distinct * from customer").readOnlyCursor();
 
         for (Object[] row: customer.rows()) {
-            customers.add((CustomerScheme) map(row, customer.columnNames()));
+            customerDtos.add((CustomerDto) map(row, customer.columnNames()));
         }
 
-        return customers;
+        return customerDtos;
     }
 
     @Override
@@ -39,6 +40,6 @@ public class Customer extends Mapper {
             }
         }
 
-        return new CustomerScheme(id, name, address);
+        return new CustomerDto(id, name, address);
     }
 }

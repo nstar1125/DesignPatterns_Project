@@ -1,11 +1,11 @@
-package com.team15.erp.model.customer;
+package com.team15.erp.dto.customer;
 
-public class CustomerScheme {
+public class CustomerDto {
     private String id;
     private String name;
     private String address;
 
-    public CustomerScheme(final String id, final String name, final String address) {
+    public CustomerDto(final String id, final String name, final String address) {
         this.id = id;
         this.name = name;
         this.address = address;
