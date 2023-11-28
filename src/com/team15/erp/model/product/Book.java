@@ -30,6 +30,9 @@ public class Book extends Mapper {
         String price = NULL;
         String writer = NULL;
         String numberOfPage = NULL;
+        String storeAt = NULL;
+        String releaseAt = NULL;
+        String isSale = NULL;
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
@@ -47,6 +50,15 @@ public class Book extends Mapper {
             if (columnNames[i].equals("number_of_page")) {
                 numberOfPage = (String) row[i];
             }
+            if (columnNames[i].equals("store_at")) {
+                storeAt = (String) row[i];
+            }
+            if (columnNames[i].equals("release_at")) {
+                releaseAt = (String) row[i];
+            }
+            if (columnNames[i].equals("is_sale")) {
+                isSale = (String) row[i];
+            }
         }
 
         return new BookDto(
@@ -55,7 +67,10 @@ public class Book extends Mapper {
                 productName,
                 price,
                 writer,
-                numberOfPage
+                numberOfPage,
+                storeAt,
+                releaseAt,
+                isSale
         );
     }
 }
