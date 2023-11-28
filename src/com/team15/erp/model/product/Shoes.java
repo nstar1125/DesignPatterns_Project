@@ -2,7 +2,6 @@ package com.team15.erp.model.product;
 
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
-import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.dto.product.ShoesDto;
@@ -39,25 +38,25 @@ public class Shoes extends Mapper {
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
-                id = (Long) row[i];
+                id = Long.valueOf((String) row[i]);
             }
             if (columnNames[i].equals("product_name")) {
                 productName = (String) row[i];
             }
             if (columnNames[i].equals("price")) {
-                price = (Integer) row[i];
+                price = Integer.parseInt((String) row[i]);
             }
             if (columnNames[i].equals("size")) {
-                size = (Integer) row[i];
+                size = Integer.parseInt((String) row[i]);
             }
             if (columnNames[i].equals("brand")) {
                 brand = (String) row[i];
             }
             if (columnNames[i].equals("store_at")) {
-                storeAt = (ZonedDateTime) row[i];
+                storeAt = toZonedDateTime((String) row[i]);
             }
             if (columnNames[i].equals("release_at")) {
-                releaseAt = (ZonedDateTime) row[i];
+                releaseAt = toZonedDateTime((String) row[i]);
             }
             if (columnNames[i].equals("status")) {
                 status = (String) row[i];

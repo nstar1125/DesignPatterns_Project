@@ -7,8 +7,12 @@ import com.team15.erp.dto.product.ShoesDto;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 public class ProductFactory {
+
+    private static final String DEFAULT_DATE_TIME = "0001-01-01 00:00:00";
+
     public ProductDto getProduct(String productType, String productStr, String[] info) throws NumberFormatException {
         ProductDto productDto = null;
 
@@ -40,8 +44,13 @@ public class ProductFactory {
         return productDto;
     }
 
-    public static ZonedDateTime toZonedDateTime(String datetimeString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd.HH-mm-ss");
-        return ZonedDateTime.parse(datetimeString, formatter);
+    protected ZonedDateTime toZonedDateTime(String datetimeString) {
+        String inputDateTime = datetimeString;
+        if (inputDateTime.equals("null")) {
+            inputDateTime = DEFAULT_DATE_TIME;
+        }
+        TimeZone tzSeoul = TimeZone.getTimeZone("Asia/Seoul");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(tzSeoul.toZoneId());
+        return ZonedDateTime.parse(inputDateTime, dateTimeFormatter);
     }
 }
