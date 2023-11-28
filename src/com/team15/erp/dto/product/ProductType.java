@@ -4,8 +4,8 @@ import javax.swing.Spring;
 
 public enum ProductType {
 
-    BOOK("BOOK"),
-    SHOES("SHOES");
+    BOOK("책"),
+    SHOES("신발");
 
     private String productType;
 
