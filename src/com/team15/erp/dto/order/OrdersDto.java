@@ -6,28 +6,21 @@ import java.util.List;
 
 public class OrdersDto {
 
-    private Long id;
     private Long customerId;
     private ZonedDateTime orderDate;
     private String productType;
     private String orderStatus;
 
     public OrdersDto(
-            final Long id,
             final Long customerId,
             final ZonedDateTime orderDate,
             final String productType,
             final String orderStatus
     ) {
-        this.id = id;
         this.customerId = customerId;
         this.orderDate = orderDate;
         this.productType = productType;
         this.orderStatus = orderStatus;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Long getCustomerId() {
@@ -44,5 +37,12 @@ public class OrdersDto {
 
     public String getOrderStatus() {
         return orderStatus;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("CustomerId : %d, OrderDate : %s, ProductType : %s, OrderStatus : %s",
+                customerId, orderDate, productType, orderStatus
+        );
     }
 }
