@@ -78,30 +78,25 @@ public class Orders extends Mapper {
         dbConnection.transaction(new ArrayList<>(List.of(query)));
     }
 
-    public void processOrders(String productType) throws IOException, ParseFailure {
-        int releaseCount = updateOrders(productType); // Order를 처리하고 처리한 수를 return
-
-        for(int i = 0; i<releaseCount; i++){ //releaseCount 만큼 출고
-            Table product = this.dbConnection.query(String.format("select * from %s order by store_at",productType)); // 입고순 정렬
+    public int processOrders(String productType) throws IOException, ParseFailure { //입고 순 정렬 후 가장 오래된 항목들 출고
+        int releaseCount = updateOrders(productType); //Order를 DELIVERY로 변경 및 처리할 항목 수 받아옴
+        for(int i = 0; i<releaseCount; i++){ //입고 순 정렬 후 가장 오래된 항목들 순서대로 출고
+            Table product = this.dbConnection.query(String.format("select * from %s where status=\"SALE\" order by store_at",productType)); // 입고순 정렬
             ReadOnlyCursor readOnlyCursor = product.readOnlyCursor();
             Object[] firstRow = readOnlyCursor.row(0);
             String releaseId = (String) firstRow[0];
             this.dbConnection.query(String.format("update %s set status=\"SOLD\" where id=%s" ,productType ,releaseId));
         }
-        System.out.println("Release complete");
-
-        Table release = this.dbConnection.query(String.format("select * from %s", productType));
-        Writer out = new FileWriter(String.format("/Users/sm/intellij-workspace/Design_Patterns_Team15/Dbase/%s.csv", productType));
-        release.export(new CSVExporter(out));
-        out.close();
+        exportCSV(productType);
+        return releaseCount;
     }
-    public int updateOrders(String type) throws IOException, ParseFailure {
+    public int updateOrders(String type) throws IOException, ParseFailure { //Order를 DELIVERY로 변경 및 처리할 항목 수 return
         String productType = (Objects.equals(type, "book"))?"책":"신발";
-        Table orders = this.dbConnection.query(String.format("select * from orders where product_type=\"%s\"", productType));
+        Table orders = this.dbConnection.query(String.format("select * from orders where product_type=\"%s\" AND orders_status=\"ORDER\"", productType));
         ReadOnlyCursor readOnlyCursor = orders.readOnlyCursor();
         Object[][] orderRows = readOnlyCursor.rows();
         int count = 0;
-        for(int i = 0; i<orderRows.length; i++){
+        for(int i = 0; i<orderRows.length; i++){ //현재 보다 이전에 주문된 품목들 count
             LocalDateTime orderDate = LocalDateTime.parse((String)orderRows[i][2], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             LocalDateTime curDate = LocalDateTime.parse(getCurrentZonedDateTimeToString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             if (orderDate.isBefore(curDate)) {
@@ -110,16 +105,19 @@ public class Orders extends Mapper {
                 count++;
             }
         }
-
-        Table processedOrders = this.dbConnection.query(String.format("select * from orders"));
-        Writer out = new FileWriter("/Users/sm/intellij-workspace/Design_Patterns_Team15/Dbase/orders.csv");
-        processedOrders.export(new CSVExporter(out));
-        out.close();
+        exportCSV("orders");
         return count;
     }
 
-
-    private String getCurrentZonedDateTimeToString() {
+    private String getCurrentZonedDateTimeToString() { //현재 시간 계산
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(ZonedDateTime.now());
     }
+
+    private void exportCSV(String csv) throws IOException, ParseFailure { //CSV로 export
+        Table table = this.dbConnection.query(String.format("select * from %s",csv));
+        Writer out = new FileWriter(String.format("Dbase/%s.csv", csv));
+        table.export(new CSVExporter(out));
+        out.close();
+    }
+
 }

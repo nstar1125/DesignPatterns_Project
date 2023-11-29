@@ -5,7 +5,9 @@ import com.team15.erp.activity.Activity;
 import com.team15.erp.model.order.Orders;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
+import java.util.Objects;
 
 public class ReleaseActivity <Option> extends Activity<Option> {
     @Override
@@ -27,11 +29,16 @@ public class ReleaseActivity <Option> extends Activity<Option> {
     @Override
     public void perform(Option option) throws Exception {
         String productType = (String)option;
-        releaseProducts(productType);
+        String productName = (Objects.equals(productType, "book"))?"책":"신발";
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(String.format("%s 기준 이전에 주문된 %s들을 출고합니다.",now.toString(),productName));
+        System.out.println();
+        int releaseCount = releaseProducts(productType); //품목 출고
+        System.out.println(String.format("%s %d개가 출고 되었습니다.",productName, releaseCount));
     }
-    private void releaseProducts(String productType) throws IOException, ParseFailure {
+    private int releaseProducts(String productType) throws IOException, ParseFailure {
         Orders orders = new Orders();
-        orders.processOrders(productType);
+        return orders.processOrders(productType); //품목 출고
     }
 
 }
