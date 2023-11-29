@@ -134,4 +134,29 @@ public class DatabaseTest {
             );
         }
     }
+
+    @Test
+    @DisplayName("XML customer import 테스트")
+    public void testXmlImportCustomer() throws IOException, ParseFailure {
+        Database database = new Database("Dbase");
+
+        Object[][] rows = database.execute("SELECT * FROM customer2").readOnlyCursor().rows();
+        Object[][] expected = {
+                {"Data1", "Data2"},
+                {"Data3", "Data4"},
+        };
+
+        assertArrayEquals(expected, rows);
+    }
+
+    @Test
+    @DisplayName("XML customer export 테스트")
+    public void testXmlExportCustomer() throws IOException, ParseFailure {
+        Database database = new Database("Dbase");
+
+        database.begin();
+        database.execute("INSERT INTO customer2 VALUES ('Data5', 'Data6')");
+        database.commit();
+        database.dump();
+    }
 }

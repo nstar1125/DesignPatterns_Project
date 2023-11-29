@@ -37,8 +37,7 @@ public class ReleaseActivity <Option> extends Activity<Option> {
         System.out.println(String.format("%s %d개가 출고 되었습니다.",productName, releaseCount));
     }
     private int releaseProducts(String productType) throws IOException, ParseFailure {
-        Orders orders = new Orders();
-        return orders.processOrders(productType); //품목 출고
+        return new Orders().processOrders(productType); //품목 출고
     }
 
 }

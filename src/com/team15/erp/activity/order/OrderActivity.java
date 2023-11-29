@@ -96,8 +96,7 @@ public class OrderActivity<Option> extends Activity<Option> {
         }
 
         try {
-            Long nextOrderId = (long) getOrderTableSize();
-            Object[] orderInfos = new Object[] {nextOrderId, customerId, getCurrentZonedDateTimeToString(), productType, OrderStatus.ORDER.getOrderStatus()};
+            Object[] orderInfos = new Object[] {customerId, getCurrentZonedDateTimeToString(), productType, OrderStatus.ORDER.getOrderStatus()};
 
             insertOrder(orders, orderInfos);
             System.out.println("주문이 정상적으로 생성 되었습니다.");
@@ -114,11 +113,6 @@ public class OrderActivity<Option> extends Activity<Option> {
         }
 
         return false;
-    }
-
-    private int getOrderTableSize() throws IOException, ParseFailure {
-        Orders orders = new Orders();
-        return orders.getOrderTableSize();
     }
 
     private void insertOrder(final Orders orders, final Object[] infos) throws IOException, ParseFailure {
