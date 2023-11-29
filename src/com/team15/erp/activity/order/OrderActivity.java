@@ -52,6 +52,7 @@ public class OrderActivity<Option> extends Activity<Option> {
         Orders orders = new Orders();
         // order 생성 해주자
         createOrder(orders, customerId, productType);
+        printAllOrders(orders);
     }
 
     @Override

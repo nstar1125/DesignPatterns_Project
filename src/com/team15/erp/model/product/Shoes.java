@@ -2,6 +2,7 @@ package com.team15.erp.model.product;
 
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
+import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.dto.product.ShoesDto;
@@ -17,9 +18,17 @@ public class Shoes extends Mapper {
 
     public int getNumberOfShoes() {
         try {
+            ArrayList<ShoesDto> shoesDtos = new ArrayList<>();
             ReadOnlyCursor shoes = this.dbConnection.query("select distinct * from shoes").readOnlyCursor();
 
-            return shoes.rows().length;
+            for (Object[] row: shoes.rows()) {
+                shoesDtos.add((ShoesDto) map(row, shoes.columnNames()));
+            }
+
+            return (int) shoesDtos
+                    .stream()
+                    .filter(bookDto -> bookDto.getStatus().equals(ProductStatus.SALE.getProductStatus()))
+                    .count();
         } catch (IOException ioException) {
             System.out.println(ioException);
         } catch (ParseFailure parseFailure) {
