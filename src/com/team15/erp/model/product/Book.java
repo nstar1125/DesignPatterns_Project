@@ -8,7 +8,9 @@ import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.model.Mapper;
 import java.io.IOException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Book extends Mapper {
 
@@ -24,6 +26,16 @@ public class Book extends Mapper {
         }
 
         return 0;
+    }
+
+    public List<Object> selectAllByNameWriter(String productName, String writer) throws IOException, ParseFailure {
+        ReadOnlyCursor cursor = dbConnection.query("select * from book " +
+                "where product_name = \""+productName+"\"" +
+                "and writer = \""+writer+"\"").readOnlyCursor();
+
+        return Arrays.stream(cursor.rows())
+                .map(row -> map(row, cursor.columnNames()))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -9,6 +9,9 @@ import com.team15.erp.model.Mapper;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Shoes extends Mapper {
 
@@ -24,6 +27,25 @@ public class Shoes extends Mapper {
         }
 
         return 0;
+    }
+
+    public List<Object> selectAllByNameBrandSize(String productName, String brand, Integer size) throws IOException, ParseFailure {
+        ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
+                "where product_name = \""+productName+"\" "+
+                "and brand = \""+brand+"\" "+
+                "and size = "+size).readOnlyCursor();
+
+        return Arrays.stream(cursor.rows())
+                .map(row -> map(row, cursor.columnNames()))
+                .collect(Collectors.toList());
+    }
+
+    public Object selectByNameBrand(String productName, String brand) throws IOException, ParseFailure {
+        ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
+                "where product_name = \""+productName+"\""+
+                "and brand = \""+brand+"\"").readOnlyCursor();
+
+        return map(cursor.row(0), cursor.columnNames());
     }
 
     @Override

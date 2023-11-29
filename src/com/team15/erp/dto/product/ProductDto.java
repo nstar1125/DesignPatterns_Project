@@ -1,5 +1,7 @@
 package com.team15.erp.dto.product;
 
+import com.team15.erp.model.product.ProductVisitor;
+
 import java.time.ZonedDateTime;
 
 public abstract class ProductDto {
@@ -32,6 +34,12 @@ public abstract class ProductDto {
     public Integer getPrice() {
         return price;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public abstract void accept(ProductVisitor visitor);
 
     public String getStatus() {
         return status;

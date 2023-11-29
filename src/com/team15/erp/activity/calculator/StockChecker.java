@@ -1,11 +1,12 @@
 package com.team15.erp.activity.calculator;
 
 import com.team15.erp.activity.Activity;
-import com.team15.erp.entity.product.Book;
-import com.team15.erp.entity.product.Shoes;
-import com.team15.erp.entity.product.StockVisitor;
-import com.team15.erp.model.product.BookMapper;
-import com.team15.erp.model.product.ShoesMapper;
+
+import com.team15.erp.dto.product.BookDto;
+import com.team15.erp.dto.product.ShoesDto;
+import com.team15.erp.model.product.StockVisitor;
+import com.team15.erp.model.product.Book;
+import com.team15.erp.model.product.Shoes;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -19,8 +20,9 @@ public class StockChecker<Option> extends Activity<Option> {
 
     @Override
     public void perform(Option option) throws Exception {
-        ShoesMapper shoesMapper = new ShoesMapper();
-        BookMapper bookMapper = new BookMapper();
+
+        Shoes shoesMapper = new Shoes();
+        Book bookMapper = new Book();
         StockVisitor stockCheck = new StockVisitor();
         String[] in;
 
@@ -30,7 +32,8 @@ public class StockChecker<Option> extends Activity<Option> {
                 scanner.skip("[\\r\\n]+");
                  in = scanner.nextLine().split(" ");
 
-                List<Shoes> shoeStock = shoesMapper.selectAllByNameBrandSize(
+
+                List<Object> shoeStock = shoesMapper.selectAllByNameBrandSize(
                         in[0].trim(),
                         in[1].trim(),
                         Integer.parseInt(in[2]));
@@ -38,8 +41,9 @@ public class StockChecker<Option> extends Activity<Option> {
                 System.out.println("\n=================================================");
                 System.out.println("창고에 남아 있는 신발");
                 System.out.println("=================================================");
-                for (Shoes shoes : shoeStock) {
-                    stockCheck.visit(shoes);
+
+                for (Object shoes : shoeStock) {
+                    stockCheck.visit((ShoesDto) shoes);
                 }
                 break;
 
@@ -48,15 +52,17 @@ public class StockChecker<Option> extends Activity<Option> {
                 scanner.skip("[\\r\\n]+");
                 in = scanner.nextLine().split(" ");
 
-                List<Book> bookStock = bookMapper.selectAllByNameWriter(
+
+                List<Object> bookStock = bookMapper.selectAllByNameWriter(
                         in[0].trim(),
                         in[1].trim());
 
                 System.out.println("\n=================================================");
                 System.out.println("창고에 남아 있는 책");
                 System.out.println("=================================================");
-                for (Book book : bookStock) {
-                    stockCheck.visit(book);
+
+                for (Object book : bookStock) {
+                    stockCheck.visit((BookDto) book);
                 }
                 break;
         }

@@ -1,11 +1,12 @@
 package com.team15.erp.activity.calculator;
 
 import com.team15.erp.activity.Activity;
-import com.team15.erp.entity.product.Book;
-import com.team15.erp.entity.product.ShippingFeeVisitor;
-import com.team15.erp.entity.product.Shoes;
-import com.team15.erp.model.product.BookMapper;
-import com.team15.erp.model.product.ShoesMapper;
+
+import com.team15.erp.dto.product.BookDto;
+import com.team15.erp.model.product.ShippingFeeVisitor;
+import com.team15.erp.dto.product.ShoesDto;
+import com.team15.erp.model.product.Book;
+import com.team15.erp.model.product.Shoes;
 
 import java.util.InputMismatchException;
 
@@ -18,8 +19,8 @@ public class ShippingFeeCalculator<Option> extends Activity<Option> {
 
     @Override
     public void perform(Option option) throws Exception {
-        ShoesMapper shoesMapper = new ShoesMapper();
-        BookMapper bookMapper = new BookMapper();
+        Shoes shoesMapper = new Shoes();
+        Book bookMapper = new Book();
         ShippingFeeVisitor shipCal = new ShippingFeeVisitor();
         String[] in;
 
@@ -29,25 +30,30 @@ public class ShippingFeeCalculator<Option> extends Activity<Option> {
                 scanner.skip("[\\r\\n]+");
                 in = scanner.nextLine().split(" ");
 
-                Shoes shoes = shoesMapper.selectByNameBrand(in[0].trim(), in[1].trim());
+                Object shoes = shoesMapper.selectByNameBrand(in[0].trim(), in[1].trim());
                 System.out.println("\n=================================================");
                 System.out.println("신발 배송 요금 정보");
                 System.out.println("- 가격 200,000원 초과 시, 5% 보험금 추가");
                 System.out.println("=================================================");
-                shipCal.visit(shoes);
+
+                shipCal.visit((ShoesDto) shoes);
+
                 break;
             case 2:
                 System.out.println("상품명, 작가명을 입력해주세요. ex) 요리의정신 박영복");
                 scanner.skip("[\\r\\n]+");
                 in = scanner.nextLine().split(" ");
 
-                Book book = bookMapper.selectAllByNameWriter(in[0].trim(), in[1].trim()).get(0);
+
+                Object book = bookMapper.selectAllByNameWriter(in[0].trim(), in[1].trim()).get(0);
 
                 System.out.println("\n=================================================");
                 System.out.println("책 배송 요금 정보");
                 System.out.println("- 페이지 200p 초과 시, 무게추가금 500원 추가");
                 System.out.println("=================================================");
-                shipCal.visit(book);
+
+                shipCal.visit((BookDto) book);
+
                 break;
         }
     }
