@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<customer2>
+    <ROW><column1>Data1</column1><column2>Data2</column2></ROW>
+    <ROW><column1>Data3</column1><column2>Data4</column2></ROW>
+</customer2>

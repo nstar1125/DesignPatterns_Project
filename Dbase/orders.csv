@@ -3,3 +3,4 @@ id,	customer_id,	order_date,	product_type,	orders_status
 0,	1,	2023-11-29 12:50:16,	책,	ORDER
 1,	2,	2023-11-29 12:50:16,	신발,	ORDER
 2,	0,	2023-11-30 01:23:37,	책,	ORDER
+3,	1,	2023-11-30 02:22:36,	책,	ORDER
