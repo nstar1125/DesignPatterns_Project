@@ -65,10 +65,6 @@ public class Orders extends Mapper {
         );
     }
 
-    public int getOrderTableSize() throws IOException, ParseFailure {
-        return this.dbConnection.query("select * from orders").readOnlyCursor().rows().length;
-    }
-
     public void insertOrder(final Object[] infos) throws IOException, ParseFailure {
         dbConnection.transaction(new ArrayList<>(List.of(String.format("insert into orders VALUES ('%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3]))));
     }
