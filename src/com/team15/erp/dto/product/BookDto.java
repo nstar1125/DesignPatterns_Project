@@ -1,10 +1,20 @@
 package com.team15.erp.dto.product;
 
+import com.team15.erp.model.product.ProductVisitor;
+
 import java.time.ZonedDateTime;
 
 public class BookDto extends ProductDto {
     private String writer;
     private Integer numberOfPage;
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public Integer getNumberOfPage() {
+        return numberOfPage;
+    }
 
     public BookDto(
             final Long id,
@@ -32,5 +42,10 @@ public class BookDto extends ProductDto {
                 writer,
                 numberOfPage
         );
+    }
+
+    @Override
+    public void accept(ProductVisitor visitor) {
+        visitor.visit(this);
     }
 }

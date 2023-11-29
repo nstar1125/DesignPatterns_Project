@@ -6,7 +6,6 @@ public abstract class Product {
     private String productName;
     private String price;
     private String releasedAt;
-
     public String getStoredAt() {
         return storedAt;
     }

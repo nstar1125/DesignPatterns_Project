@@ -1,7 +1,7 @@
 package com.team15.erp.activity;
 
+import com.team15.erp.activity.calculator.CalculatorEntry;
 import com.team15.erp.activity.fulfilling.Fulfilling;
-
 import com.team15.erp.activity.order.OrderActivity;
 import com.team15.erp.activity.release.ReleaseActivity;
 
@@ -28,6 +28,7 @@ public class Entry<Option> extends Activity<Option> {
         System.out.println("1: 입고");
         System.out.println("2: 출고");
         System.out.println("3: 주문");
+        System.out.println("4: 기타 정보");
         System.out.print("> ");
     }
 
@@ -51,6 +52,9 @@ public class Entry<Option> extends Activity<Option> {
                 break;
             case 3:
                 new OrderActivity<String>();
+                break;
+            case 4:
+                new CalculatorEntry<String>();
                 break;
         }
     }

@@ -1,10 +1,20 @@
 package com.team15.erp.dto.product;
 
+import com.team15.erp.model.product.ProductVisitor;
+
 import java.time.ZonedDateTime;
 
 public class ShoesDto extends ProductDto {
     private Integer size;
     private String brand;
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
 
     public ShoesDto(
             final Long id,
@@ -32,5 +42,10 @@ public class ShoesDto extends ProductDto {
                 size,
                 brand
         );
+    }
+
+    @Override
+    public void accept(ProductVisitor visitor) {
+        visitor.visit(this);
     }
 }
