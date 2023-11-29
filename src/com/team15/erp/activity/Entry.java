@@ -3,6 +3,8 @@ package com.team15.erp.activity;
 import com.team15.erp.activity.fulfilling.Fulfilling;
 
 import com.team15.erp.activity.order.OrderActivity;
+import com.team15.erp.activity.release.ReleaseActivity;
+
 import java.util.InputMismatchException;
 
 public class Entry<Option> extends Activity<Option> {
@@ -45,6 +47,7 @@ public class Entry<Option> extends Activity<Option> {
                 new Fulfilling<String>();
                 break;
             case 2:
+                new ReleaseActivity<String>();
                 break;
             case 3:
                 new OrderActivity<String>();

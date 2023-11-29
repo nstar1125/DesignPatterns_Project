@@ -1,4 +1,4 @@
-orders
-id,	customer_id,	order_date,		product_type,	orders_status
-0,	1,		2023-11-29 12:50:16,	책,		ORDER
-1,	2,		2023-11-29 12:50:16,	신발,		ORDER
+<anonymous>
+id,	customer_id,	order_date,	product_type,	orders_status
+0,	1,	2023-11-29 12:50:16,	책,	ORDER
+1,	2,	2023-11-29 12:50:16,	신발,	ORDER
