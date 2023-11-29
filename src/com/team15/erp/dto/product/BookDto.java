@@ -17,17 +17,14 @@ public class BookDto extends ProductDto {
     }
 
     public BookDto(
-            final Long id,
             final String productType,
             final String productName,
             final Integer price,
             final String writer,
             final Integer numberOfPage,
-            final ZonedDateTime storeAt,
-            final ZonedDateTime releaseAt,
             final String status
     ) {
-        super(id, productType, productName, price, storeAt, releaseAt, status);
+        super(productType, productName, price, status);
         this.writer = writer;
         this.numberOfPage = numberOfPage;
     }

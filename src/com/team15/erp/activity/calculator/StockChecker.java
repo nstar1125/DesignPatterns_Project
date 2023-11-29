@@ -1,6 +1,7 @@
 package com.team15.erp.activity.calculator;
 
 import com.team15.erp.activity.Activity;
+
 import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ShoesDto;
 import com.team15.erp.model.product.StockVisitor;
@@ -19,6 +20,7 @@ public class StockChecker<Option> extends Activity<Option> {
 
     @Override
     public void perform(Option option) throws Exception {
+
         Shoes shoesMapper = new Shoes();
         Book bookMapper = new Book();
         StockVisitor stockCheck = new StockVisitor();
@@ -30,6 +32,7 @@ public class StockChecker<Option> extends Activity<Option> {
                 scanner.skip("[\\r\\n]+");
                  in = scanner.nextLine().split(" ");
 
+
                 List<Object> shoeStock = shoesMapper.selectAllByNameBrandSize(
                         in[0].trim(),
                         in[1].trim(),
@@ -38,6 +41,7 @@ public class StockChecker<Option> extends Activity<Option> {
                 System.out.println("\n=================================================");
                 System.out.println("창고에 남아 있는 신발");
                 System.out.println("=================================================");
+
                 for (Object shoes : shoeStock) {
                     stockCheck.visit((ShoesDto) shoes);
                 }
@@ -48,6 +52,7 @@ public class StockChecker<Option> extends Activity<Option> {
                 scanner.skip("[\\r\\n]+");
                 in = scanner.nextLine().split(" ");
 
+
                 List<Object> bookStock = bookMapper.selectAllByNameWriter(
                         in[0].trim(),
                         in[1].trim());
@@ -55,6 +60,7 @@ public class StockChecker<Option> extends Activity<Option> {
                 System.out.println("\n=================================================");
                 System.out.println("창고에 남아 있는 책");
                 System.out.println("=================================================");
+
                 for (Object book : bookStock) {
                     stockCheck.visit((BookDto) book);
                 }

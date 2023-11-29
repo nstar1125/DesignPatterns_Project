@@ -5,6 +5,7 @@ import com.holub.database.Database;
 import com.holub.database.ReadOnlyCursor;
 import com.holub.database.Table;
 import com.holub.text.ParseFailure;
+import com.team15.erp.dto.order.OrderStatus;
 import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.model.Mapper;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Orders extends Mapper {
 
@@ -60,7 +62,6 @@ public class Orders extends Mapper {
         }
 
         return new OrdersDto(
-                id,
                 customerId,
                 orderDate,
                 productType,
@@ -119,5 +120,4 @@ public class Orders extends Mapper {
         table.export(new CSVExporter(out));
         out.close();
     }
-
 }

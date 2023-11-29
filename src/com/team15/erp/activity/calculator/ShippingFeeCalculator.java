@@ -1,6 +1,7 @@
 package com.team15.erp.activity.calculator;
 
 import com.team15.erp.activity.Activity;
+
 import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.model.product.ShippingFeeVisitor;
 import com.team15.erp.dto.product.ShoesDto;
@@ -34,12 +35,15 @@ public class ShippingFeeCalculator<Option> extends Activity<Option> {
                 System.out.println("신발 배송 요금 정보");
                 System.out.println("- 가격 200,000원 초과 시, 5% 보험금 추가");
                 System.out.println("=================================================");
+
                 shipCal.visit((ShoesDto) shoes);
+
                 break;
             case 2:
                 System.out.println("상품명, 작가명을 입력해주세요. ex) 요리의정신 박영복");
                 scanner.skip("[\\r\\n]+");
                 in = scanner.nextLine().split(" ");
+
 
                 Object book = bookMapper.selectAllByNameWriter(in[0].trim(), in[1].trim()).get(0);
 
@@ -47,7 +51,9 @@ public class ShippingFeeCalculator<Option> extends Activity<Option> {
                 System.out.println("책 배송 요금 정보");
                 System.out.println("- 페이지 200p 초과 시, 무게추가금 500원 추가");
                 System.out.println("=================================================");
+
                 shipCal.visit((BookDto) book);
+
                 break;
         }
     }

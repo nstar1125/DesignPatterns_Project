@@ -6,6 +6,7 @@ import com.holub.database.TableFactory;
 import com.holub.text.ParseFailure;
 import com.team15.erp.activity.Activity;
 import com.team15.erp.dto.order.OrderStatus;
+import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
@@ -48,8 +49,9 @@ public class OrderActivity<Option> extends Activity<Option> {
         Long customerId = Long.valueOf(inputOptions[0]);
         String productType = inputOptions[1];
 
+        Orders orders = new Orders();
         // order 생성 해주자
-        createOrder(customerId, productType);
+        createOrder(orders, customerId, productType);
     }
 
     @Override
@@ -87,7 +89,7 @@ public class OrderActivity<Option> extends Activity<Option> {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(ZonedDateTime.now());
     }
 
-    private void createOrder(final Long customerId, final String productType) throws InputMismatchException {
+    private void createOrder(final Orders orders, final Long customerId, final String productType) throws InputMismatchException {
         if (!validateOrder(productType)) {
             throw new InputMismatchException("잘못된 주문 입니다.");
         }
@@ -96,7 +98,7 @@ public class OrderActivity<Option> extends Activity<Option> {
             Long nextOrderId = (long) getOrderTableSize();
             Object[] orderInfos = new Object[] {nextOrderId, customerId, getCurrentZonedDateTimeToString(), productType, OrderStatus.ORDER.getOrderStatus()};
 
-            insertOrder(orderInfos);
+            insertOrder(orders, orderInfos);
             System.out.println("주문이 정상적으로 생성 되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,8 +120,16 @@ public class OrderActivity<Option> extends Activity<Option> {
         return orders.getOrderTableSize();
     }
 
-    private void insertOrder(final Object[] infos) throws IOException, ParseFailure {
-        Orders orders = new Orders();
+    private void insertOrder(final Orders orders, final Object[] infos) throws IOException, ParseFailure {
         orders.insertOrder(infos);
+    }
+
+    private void printAllOrders(final Orders orders) throws IOException, ParseFailure {
+        List<OrdersDto> ordersDtos = orders.getAllOrders();
+
+        System.out.println("주문 현황");
+        for (OrdersDto ordersDto : ordersDtos) {
+            System.out.println(ordersDto.toString());
+        }
     }
 }
