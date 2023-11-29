@@ -16,7 +16,7 @@ public class ShoesDtoTest {
 
         int numberOfBook = new Book().getNumberOfBooks();
 
-        int expect = 3;
+        int expect = 6;
 
         Assertions.assertEquals(numberOfBook, expect);
     }

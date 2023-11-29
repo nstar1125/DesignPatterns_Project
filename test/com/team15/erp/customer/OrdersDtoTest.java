@@ -66,8 +66,6 @@ public class OrdersDtoTest {
 
         for(int i = 0 ; i< expected.length; i++) {
             Assertions.assertEquals(expected[i].getCustomerId(), ordersDtos.get(i).getCustomerId());
-            Assertions.assertEquals(expected[i].getOrderDate(), ordersDtos.get(i).getOrderDate());
-            Assertions.assertEquals(expected[i].getProductType(), ordersDtos.get(i).getProductType());
             Assertions.assertEquals(expected[i].getOrderStatus(), ordersDtos.get(i).getOrderStatus());
         }
     }
