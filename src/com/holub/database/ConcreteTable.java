@@ -166,10 +166,10 @@ import com.holub.tools.ArrayIterator;
 
 	// ----------------------------------------------------------------------
 	public int insert(Map row) { // A map is considered to be "ordered," with the order defined
-									// as the order in which an iterator across a "view" returns
-									// values. My reading of this statement is that the iterator
-									// across the keySet() visits keys in the same order as the
-									// iterator across the values() visits the values.
+		// as the order in which an iterator across a "view" returns
+		// values. My reading of this statement is that the iterator
+		// across the keySet() visits keys in the same order as the
+		// iterator across the values() visits the values.
 
 		return insert(row.keySet(), row.values());
 	}
@@ -287,37 +287,37 @@ import com.holub.tools.ArrayIterator;
 	// @cursor-end
 	// ----------------------------------------------------------------------
 
-    private final class ReadOnlyResult implements ReadOnlyCursor {
-        @Override
-        public Object[][] rows() {
-            Object[][] rows = new Object[rowSet.size()][columnNames.length];
-            for (int i = 0; i < rowSet.size(); i++) {
-                Object[] row = row(i);
-                for (int j = 0; j < row.length; j++) {
-                    rows[i][j] = row[j];
-                }
-            }
+	private final class ReadOnlyResult implements ReadOnlyCursor {
+		@Override
+		public Object[][] rows() {
+			Object[][] rows = new Object[rowSet.size()][columnNames.length];
+			for (int i = 0; i < rowSet.size(); i++) {
+				Object[] row = row(i);
+				for (int j = 0; j < row.length; j++) {
+					rows[i][j] = row[j];
+				}
+			}
 
-            return rows;
-        }
+			return rows;
+		}
 
-        @Override
-        public Object[] row(int index) throws IndexOutOfBoundsException {
-            return (Object[]) rowSet.get(index);
-        }
+		@Override
+		public Object[] row(int index) throws IndexOutOfBoundsException {
+			return (Object[]) rowSet.get(index);
+		}
 
-        @Override
-        public Object[] column(String columnName) throws IndexOutOfBoundsException {
-            int colIdx = indexOf(columnName);
-            Object[] col = new Object[rowSet.size()];
+		@Override
+		public Object[] column(String columnName) throws IndexOutOfBoundsException {
+			int colIdx = indexOf(columnName);
+			Object[] col = new Object[rowSet.size()];
 
-            for (int i = 0; i < rowSet.size(); i++) {
-                Object[] row = row(i);
-                col[i] = row[colIdx];
-            }
+			for (int i = 0; i < rowSet.size(); i++) {
+				Object[] row = row(i);
+				col[i] = row[colIdx];
+			}
 
-            return col;
-        }
+			return col;
+		}
 
 		@Override
 		public Object[] columns(String[] columnNames) throws IndexOutOfBoundsException {
@@ -351,9 +351,9 @@ import com.holub.tools.ArrayIterator;
 		}
 
 		@Override
-        public int columnIndex(String columnName) throws IndexOutOfBoundsException {
-            return indexOf(columnName);
-        }
+		public int columnIndex(String columnName) throws IndexOutOfBoundsException {
+			return indexOf(columnName);
+		}
 
 		public String[] columnNames() {
 			return columnNames;
@@ -538,7 +538,7 @@ import com.holub.tools.ArrayIterator;
 	 * This version of select does a join
 	 */
 	public Table select(Selector where, String[] requestedColumns, // {=ConcreteTable.select.default}
-			Table[] otherTables) {
+						Table[] otherTables) {
 		// If we're not doing a join, use the more efficient version
 		// of select().
 
@@ -582,11 +582,11 @@ import com.holub.tools.ArrayIterator;
 	 * up a notch, advances the correct iterator, and recurses back down.
 	 */
 	private static void selectFromCartesianProduct(int level, Selector where, String[] requestedColumns,
-			Table[] allTables, Cursor[] allIterators, Table resultTable) {
+												   Table[] allTables, Cursor[] allIterators, Table resultTable) {
 		allIterators[level] = allTables[level].rows();
 
 		while (allIterators[level].advance()) { // If we haven't reached the tips of the branches yet,
-												// go down one more level.
+			// go down one more level.
 
 			if (level < allIterators.length - 1)
 				selectFromCartesianProduct(level + 1, where, requestedColumns, allTables, allIterators, resultTable);
@@ -899,9 +899,9 @@ import com.holub.tools.ArrayIterator;
 		}
 
 		public void testStore() throws IOException, ClassNotFoundException { // Flush the table to disk, then reread it.
-																				// Subsequent tests that use the
-																				// "people" table will
-																				// fail if this operation fails.
+			// Subsequent tests that use the
+			// "people" table will
+			// fail if this operation fails.
 
 			Writer out = new FileWriter("people");
 			people.export(new CSVExporter(out));
@@ -951,11 +951,11 @@ import com.holub.tools.ArrayIterator;
 			third.insert(new Object[] { "2", "addrId=2" });
 
 			result = people.select(new Selector.Adapter() {
-				public boolean approve(Cursor[] tables) {
-					return (tables[0].column("addrId").equals(tables[1].column("addrId"))
-							&& tables[0].column("addrId").equals(tables[2].column("addrId")));
-				}
-			},
+									   public boolean approve(Cursor[] tables) {
+										   return (tables[0].column("addrId").equals(tables[1].column("addrId"))
+												   && tables[0].column("addrId").equals(tables[2].column("addrId")));
+									   }
+								   },
 
 					new String[] { "last", "first", "state", "text" }, new Table[] { address, third });
 
