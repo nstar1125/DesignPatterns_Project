@@ -37,16 +37,12 @@ public class Orders extends Mapper {
 
     @Override
     protected Object map(final Object[] row, final String[] columnNames) {
-        Long id = 0L;
         Long customerId = 0L;
         ZonedDateTime orderDate = null;
         String productType = null;
         String orderStatus = null;
 
         for (int i = 0; i < columnNames.length; i++) {
-            if (columnNames[i].equals("id")) {
-                id = Long.valueOf((String) row[i]);
-            }
             if (columnNames[i].equals("customer_id")) {
                 customerId = Long.valueOf((String) row[i]);
             }
@@ -74,8 +70,7 @@ public class Orders extends Mapper {
     }
 
     public void insertOrder(final Object[] infos) throws IOException, ParseFailure {
-        String query = String.format("insert into orders VALUES ('%d', '%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3], infos[4]);
-//        this.dbConnection.query(query);
+        String query = String.format("insert into orders VALUES ('%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3]);
         dbConnection.transaction(new ArrayList<>(List.of(query)));
     }
 

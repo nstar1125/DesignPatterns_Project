@@ -26,12 +26,11 @@ public class OrdersDtoTest {
         ArrayList<OrdersDto> ordersDtos = new Orders().getAllOrders();
 
         OrdersDto[] expected = {
-                new OrdersDto(0L, 1L, toZonedDateTime("2023-11-29 12:50:16"), "책", "SALE"),
-                new OrdersDto(1L, 2L, toZonedDateTime("2023-11-29 12:50:16"), "신발", "SALE")
+                new OrdersDto( 1L, toZonedDateTime("2023-11-29 12:50:16"), "책", "ORDER"),
+                new OrdersDto(2L, toZonedDateTime("2023-11-29 12:50:16"), "신발", "ORDER")
         };
 
         for(int i = 0 ; i< expected.length; i++) {
-            Assertions.assertEquals(expected[i].getId(), ordersDtos.get(i).getId());
             Assertions.assertEquals(expected[i].getCustomerId(), ordersDtos.get(i).getCustomerId());
             Assertions.assertEquals(expected[i].getOrderDate(), ordersDtos.get(i).getOrderDate());
             Assertions.assertEquals(expected[i].getProductType(), ordersDtos.get(i).getProductType());
@@ -48,7 +47,7 @@ public class OrdersDtoTest {
         ZonedDateTime currentTime = ZonedDateTime.now();
 
         Object[] orderInfos = new Object[] {
-                2L, 0L,
+                0L,
                 getCurrentZonedDateTimeToString(currentTime),
                 ProductType.BOOK.getProductType(),
                 OrderStatus.ORDER.getOrderStatus()
@@ -60,13 +59,12 @@ public class OrdersDtoTest {
         ZonedDateTime stringToZoned = toZonedDateTime(zonedToString);
 
         OrdersDto[] expected = {
-                new OrdersDto(0L, 1L, toZonedDateTime("2023-11-29 12:50:16"), "책", "ORDER"),
-                new OrdersDto(1L, 2L, toZonedDateTime("2023-11-29 12:50:16"), "신발", "ORDER"),
-                new OrdersDto(2L, 0L, stringToZoned, "책", "ORDER")
+                new OrdersDto(1L,  toZonedDateTime("2023-11-29 12:50:16"), "책", "ORDER"),
+                new OrdersDto(2L,  toZonedDateTime("2023-11-29 12:50:16"), "신발", "ORDER"),
+                new OrdersDto(0L,  stringToZoned, "책", "ORDER")
         };
 
         for(int i = 0 ; i< expected.length; i++) {
-            Assertions.assertEquals(expected[i].getId(), ordersDtos.get(i).getId());
             Assertions.assertEquals(expected[i].getCustomerId(), ordersDtos.get(i).getCustomerId());
             Assertions.assertEquals(expected[i].getOrderDate(), ordersDtos.get(i).getOrderDate());
             Assertions.assertEquals(expected[i].getProductType(), ordersDtos.get(i).getProductType());
