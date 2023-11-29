@@ -77,9 +77,4 @@ public class Shoes extends Mapper {
                 status
         );
     }
-
-    @Override
-    public void accept(ProductVisitor visitor) {
-        visitor.visitShoes(this);
-    }
 }

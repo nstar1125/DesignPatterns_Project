@@ -52,8 +52,16 @@ public abstract class Product {
         return storedAt;
     }
 
+    public void setStoredAt(ZonedDateTime storedAt) {
+        this.storedAt = storedAt;
+    }
+
     public ZonedDateTime getReleasedAt() {
         return releasedAt;
+    }
+
+    public void setReleasedAt(ZonedDateTime releasedAt) {
+        this.releasedAt = releasedAt;
     }
 
     public String getStatus() {

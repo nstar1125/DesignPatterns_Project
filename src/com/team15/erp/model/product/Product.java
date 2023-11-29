@@ -6,9 +6,6 @@ public abstract class Product {
     private String productName;
     private String price;
     private String releasedAt;
-
-    public abstract void accept(ProductVisitor visitor);
-
     public String getStoredAt() {
         return storedAt;
     }
