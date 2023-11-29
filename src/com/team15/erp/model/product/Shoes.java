@@ -88,14 +88,11 @@ public class Shoes extends Mapper {
         }
 
         return new ShoesDto(
-                id,
                 productType,
                 productName,
                 price,
                 size,
                 brand,
-                storeAt,
-                releaseAt,
                 status
         );
     }

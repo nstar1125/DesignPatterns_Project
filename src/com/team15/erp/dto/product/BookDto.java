@@ -30,18 +30,6 @@ public class BookDto extends ProductDto {
     }
 
     @Override
-    public String toString() {
-        return String.format("[%s] id : %d, title : %s, price : %d, writer : %s, totalPage : %d",
-                getProductType(),
-                getId(),
-                getProductName(),
-                getPrice(),
-                writer,
-                numberOfPage
-        );
-    }
-
-    @Override
     public void accept(ProductVisitor visitor) {
         visitor.visit(this);
     }

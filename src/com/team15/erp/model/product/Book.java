@@ -78,14 +78,11 @@ public class Book extends Mapper {
         }
 
         return new BookDto(
-                id,
                 productType,
                 productName,
                 price,
                 writer,
                 numberOfPage,
-                storeAt,
-                releaseAt,
                 status
         );
     }

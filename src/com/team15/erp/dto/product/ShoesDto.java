@@ -30,18 +30,6 @@ public class ShoesDto extends ProductDto {
     }
 
     @Override
-    public String toString() {
-        return String.format("[%s] id : %d, name : %s, price : %d, size : %d, brand : %s",
-                getProductType(),
-                getId(),
-                getProductName(),
-                getPrice(),
-                size,
-                brand
-        );
-    }
-
-    @Override
     public void accept(ProductVisitor visitor) {
         visitor.visit(this);
     }
