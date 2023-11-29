@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 public class OrderActivity<Option> extends Activity<Option> {
 
-    private static final String fileOutputName = "/Users/sonmingyu/학교자료/설계패턴/HolubSQL/src/com/holub/database/Dbase";
     private int numberOfBooks = 0;
     private int numberOfShoes = 0;
 
@@ -85,7 +84,7 @@ public class OrderActivity<Option> extends Activity<Option> {
     }
 
     private String getCurrentZonedDateTimeToString() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").format(ZonedDateTime.now());
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(ZonedDateTime.now());
     }
 
     private void createOrder(final Long customerId, final String productType) throws InputMismatchException {
