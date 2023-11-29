@@ -41,7 +41,7 @@ public class ShippingFeeCalculator<Option> extends Activity<Option> {
                 scanner.skip("[\\r\\n]+");
                 in = scanner.nextLine().split(" ");
 
-                Book book = bookMapper.selectAllByNameWriter(in[0].trim(), in[1].trim()).getFirst();
+                Book book = bookMapper.selectAllByNameWriter(in[0].trim(), in[1].trim()).get(0);
 
                 System.out.println("\n=================================================");
                 System.out.println("책 배송 요금 정보");
