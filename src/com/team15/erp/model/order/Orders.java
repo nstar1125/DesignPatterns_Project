@@ -70,8 +70,7 @@ public class Orders extends Mapper {
     }
 
     public void insertOrder(final Object[] infos) throws IOException, ParseFailure {
-        String query = String.format("insert into orders VALUES ('%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3]);
-        dbConnection.transaction(new ArrayList<>(List.of(query)));
+        dbConnection.transaction(new ArrayList<>(List.of(String.format("insert into orders VALUES ('%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3]))));
     }
 
     public int processOrders(String productType) throws IOException, ParseFailure { //입고 순 정렬 후 가장 오래된 항목들 출고
@@ -81,9 +80,8 @@ public class Orders extends Mapper {
             ReadOnlyCursor readOnlyCursor = product.readOnlyCursor();
             Object[] firstRow = readOnlyCursor.row(0);
             String releaseId = (String) firstRow[0];
-            this.dbConnection.query(String.format("update %s set status=\"SOLD\" where id=%s" ,productType ,releaseId));
+            this.dbConnection.transaction(new ArrayList<>(List.of(String.format("update %s set status=\"SOLD\" where id=%s" ,productType ,releaseId))));
         }
-        exportCSV(productType);
         return releaseCount;
     }
     public int updateOrders(String type) throws IOException, ParseFailure { //Order를 DELIVERY로 변경 및 처리할 항목 수 return
@@ -97,22 +95,14 @@ public class Orders extends Mapper {
             LocalDateTime curDate = LocalDateTime.parse(getCurrentZonedDateTimeToString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             if (orderDate.isBefore(curDate)) {
                 String deleteId = (String) orderRows[i][0];
-                this.dbConnection.query(String.format("update orders set orders_status=\"DELIVERY\" where id=%s" ,deleteId));
+                this.dbConnection.transaction(new ArrayList<>(List.of(String.format("update orders set orders_status=\"DELIVERY\" where id=%s" ,deleteId))));
                 count++;
             }
         }
-        exportCSV("orders");
         return count;
     }
 
     private String getCurrentZonedDateTimeToString() { //현재 시간 계산
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(ZonedDateTime.now());
-    }
-
-    private void exportCSV(String csv) throws IOException, ParseFailure { //CSV로 export
-        Table table = this.dbConnection.query(String.format("select * from %s",csv));
-        Writer out = new FileWriter(String.format("Dbase/%s.csv", csv));
-        table.export(new CSVExporter(out));
-        out.close();
     }
 }
