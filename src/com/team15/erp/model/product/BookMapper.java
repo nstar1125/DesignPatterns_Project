@@ -8,6 +8,7 @@ import com.team15.erp.entity.product.Book;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookMapper extends Mapper<Book> {
 
@@ -18,7 +19,7 @@ public class BookMapper extends Mapper<Book> {
 
         return Arrays.stream(cursor.rows())
                 .map(row -> map(row, cursor.columnNames()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

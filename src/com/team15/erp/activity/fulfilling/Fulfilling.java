@@ -34,6 +34,8 @@ public class Fulfilling<Option> extends Activity<Option> {
         ArrayList<ProductDto> incomingProductDtos = new Inspection().inspect(fulfillingOrder);
         System.out.println(incomingProductDtos);
 
-        //TODO: pipeline another activity here
+        for(ProductDto p: incomingProductDtos) {
+            System.out.println("상품 종류: " + p.getProductType() + "상품 이름: " + p.getProductName());
+        }
     }
 }
