@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class ShoesMapper extends Mapper<Shoes> {
 
-    public List<Shoes> selectByNameTypeBrandSize(String productName, String brand, Integer size) throws IOException, ParseFailure {
+    public List<Shoes> selectAllByNameBrandSize(String productName, String brand, Integer size) throws IOException, ParseFailure {
         ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
                 "where product_name = \""+productName+"\""+
                 "and brand = \""+brand+"\""+
@@ -21,6 +21,14 @@ public class ShoesMapper extends Mapper<Shoes> {
         return Arrays.stream(cursor.rows())
                 .map(row -> map(row, cursor.columnNames()))
                 .collect(Collectors.toList());
+    }
+
+    public Shoes selectByNameBrand(String productName, String brand) throws IOException, ParseFailure {
+        ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
+                "where product_name = \""+productName+"\""+
+                "and brand = \""+brand+"\"").readOnlyCursor();
+
+        return map(cursor.row(0), cursor.columnNames());
     }
 
     @Override
