@@ -12,7 +12,7 @@ public class StockVisitor implements ProductVisitor {
 
     @Override
     public void visitShoes(Shoes shoes) {
-        //TODO
+        System.out.println("hi");
     }
 
     @Override
