@@ -23,6 +23,6 @@ public class Book extends Product {
 
     @Override
     public void accept(ProductVisitor visitor) {
-        visitor.visitBook(this);
+        visitor.visit(this);
     }
 }
