@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fulfilling extends Mapper {
+public class Fulfillings extends Mapper {
 
     public void saveProduct(ArrayList<ProductDto> productDtoList) throws IOException, ParseFailure {
         for(ProductDto p: productDtoList) {
-            String query = "";
-            System.out.println("ªÛ«∞ ¡æ∑˘: " + p.getProductType() + "ªÛ«∞ ¿Ã∏ß: " + p.getProductName());
-            if("√•".equals(p.getProductType())) {
+            String query;
+
+            if("Ï±Ö".equals(p.getProductType())) {
                 query = String.format("insert into book(product_name, price, status) VALUES ('%s', '%d', '%s')", p.getProductName(), p.getPrice(), p.getStatus());
             } else {
                 query = String.format("insert into Shoes(product_name, price, status) VALUES ('%s', '%d', '%s')", p.getProductName(), p.getPrice(), p.getStatus());
