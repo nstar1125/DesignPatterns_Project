@@ -16,7 +16,7 @@ public class Orders extends Mapper {
     public ArrayList<OrdersDto> getAllOrders() throws IOException, ParseFailure {
         ArrayList<OrdersDto> ordersDtos = new ArrayList<>();
 
-        ReadOnlyCursor order = this.dbConnection.query("select distinct * from order").readOnlyCursor();
+        ReadOnlyCursor order = this.dbConnection.query("select distinct * from orders").readOnlyCursor();
 
         for (Object[] row: order.rows()) {
             ordersDtos.add((OrdersDto) map(row, order.columnNames()));
@@ -46,7 +46,7 @@ public class Orders extends Mapper {
             if (columnNames[i].equals("product_type")) {
                 productType = (String) row[i];
             }
-            if (columnNames[i].equals("order_product_ids")) {
+            if (columnNames[i].equals("orders_status")) {
                 orderStatus = ((String) row[i]);
             }
         }
