@@ -9,20 +9,20 @@ public class OrdersDto {
     private Long id;
     private Long customerId;
     private ZonedDateTime orderDate;
-    private List<HashMap<String, Long>> orderProductIds;
+    private String productType;
     private String orderStatus;
 
     public OrdersDto(
             final Long id,
             final Long customerId,
             final ZonedDateTime orderDate,
-            final List<HashMap<String, Long>> orderProductIds,
+            final String productType,
             final String orderStatus
     ) {
         this.id = id;
         this.customerId = customerId;
         this.orderDate = orderDate;
-        this.orderProductIds = orderProductIds;
+        this.productType = productType;
         this.orderStatus = orderStatus;
     }
 
@@ -38,8 +38,8 @@ public class OrdersDto {
         return orderDate;
     }
 
-    public List<HashMap<String, Long>> getOrderProductIds() {
-        return orderProductIds;
+    public String getProductType() {
+        return productType;
     }
 
     public String getOrderStatus() {
