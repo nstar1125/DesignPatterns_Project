@@ -47,5 +47,6 @@ public class DBConnection {
         }
 
         this.database.commit();
+        this.database.dump();
     }
 }
