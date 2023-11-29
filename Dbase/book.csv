@@ -1,5 +1,5 @@
-book
-id,	product_name,	price,	writer,	number_of_page,	store_at,		release_at,	status
-0,	book1,		16000,	w1,	190,		2023-11-28 15:16:10,	null,		SALE
-1,	book2,		18000,	w2,	350,		2023-11-10 15:16:10,	null,		SALE
-2,	book3,		20000,	w3,	300,		2023-11-15 15:16:10,	null,		SOLD
+<anonymous>
+id,	product_name,	price,	writer,	number_of_page,	store_at,	release_at,	status
+0,	book1,	16000,	w1,	190,	2023-11-28 15:16:10,	null,	SALE
+1,	book2,	18000,	w2,	350,	2023-11-10 15:16:10,	null,	SALE
+2,	book3,	20000,	w3,	300,	2023-11-15 15:16:10,	null,	SOLD
