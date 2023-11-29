@@ -12,17 +12,18 @@ import java.util.ArrayList;
 
 public class Book extends Mapper {
 
-    public ArrayList<BookDto> getAllBooks() throws IOException, ParseFailure {
-        ArrayList<BookDto> bookDtos = new ArrayList<>();
+    public int getNumberOfBooks() {
+        try {
+            ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
 
-        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
-        ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
-
-        for (Object[] row: book.rows()) {
-            bookDtos.add((BookDto) map(row, book.columnNames()));
+            return book.rows().length;
+        } catch (IOException ioException) {
+            System.out.println(ioException);
+        } catch (ParseFailure parseFailure) {
+            System.out.println(parseFailure);
         }
 
-        return bookDtos;
+        return 0;
     }
 
     @Override
