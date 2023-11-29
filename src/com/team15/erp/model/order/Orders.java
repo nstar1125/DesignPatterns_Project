@@ -61,17 +61,12 @@ public class Orders extends Mapper {
     }
 
     public int getOrderTableSize() throws IOException, ParseFailure {
-        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
         return this.dbConnection.query("select * from orders").readOnlyCursor().rows().length;
-    }
-
-    public Table selectOrderTable() throws IOException, ParseFailure {
-        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
-        return this.dbConnection.query("select * from orders");
     }
 
     public void insertOrder(final Object[] infos) throws IOException, ParseFailure {
         String query = String.format("insert into orders VALUES ('%d', '%d', '%s', '%s', '%s')", infos[0], infos[1], infos[2], infos[3], infos[4]);
-        this.dbConnection.query(query);
+//        this.dbConnection.query(query);
+        dbConnection.transaction(new ArrayList<>(List.of(query)));
     }
 }

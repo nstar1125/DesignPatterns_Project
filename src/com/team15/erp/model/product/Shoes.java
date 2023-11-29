@@ -12,17 +12,18 @@ import java.util.ArrayList;
 
 public class Shoes extends Mapper {
 
-    public ArrayList<ShoesDto> getAllShoes() throws IOException, ParseFailure {
-        ArrayList<ShoesDto> shoesDtos = new ArrayList<>();
+    public int getNumberOfShoes() {
+        try {
+            ReadOnlyCursor shoes = this.dbConnection.query("select distinct * from shoes").readOnlyCursor();
 
-        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
-        ReadOnlyCursor shoes = this.dbConnection.query("select distinct * from shoes").readOnlyCursor();
-
-        for (Object[] row: shoes.rows()) {
-            shoesDtos.add((ShoesDto) map(row, shoes.columnNames()));
+            return shoes.rows().length;
+        } catch (IOException ioException) {
+            System.out.println(ioException);
+        } catch (ParseFailure parseFailure) {
+            System.out.println(parseFailure);
         }
 
-        return shoesDtos;
+        return 0;
     }
 
     @Override
