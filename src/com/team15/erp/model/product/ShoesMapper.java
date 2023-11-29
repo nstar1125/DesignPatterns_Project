@@ -13,7 +13,10 @@ import java.util.stream.Collectors;
 public class ShoesMapper extends Mapper<Shoes> {
 
     public List<Shoes> selectByNameTypeBrandSize(String productName, String brand, Integer size) throws IOException, ParseFailure {
-        ReadOnlyCursor cursor = dbConnection.query("select * from shoes where product_name = \""+productName+"\"").readOnlyCursor();
+        ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
+                "where product_name = \""+productName+"\""+
+                "and brand = \""+brand+"\""+
+                "and size = \""+size+"\"").readOnlyCursor();
 
         return Arrays.stream(cursor.rows())
                 .map(row -> map(row, cursor.columnNames()))

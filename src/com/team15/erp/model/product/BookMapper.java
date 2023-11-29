@@ -12,7 +12,9 @@ import java.util.List;
 public class BookMapper extends Mapper<Book> {
 
     public List<Book> selectByNameWriter(String productName, String writer) throws IOException, ParseFailure {
-        ReadOnlyCursor cursor = dbConnection.query("select * from book where product_name = \""+productName+"\"").readOnlyCursor();
+        ReadOnlyCursor cursor = dbConnection.query("select * from book " +
+                "where product_name = \""+productName+"\"" +
+                "and writer = \""+writer+"\"").readOnlyCursor();
 
         return Arrays.stream(cursor.rows())
                 .map(row -> map(row, cursor.columnNames()))
