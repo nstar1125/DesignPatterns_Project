@@ -3,7 +3,6 @@ package com.team15.erp.model.order;
 import com.holub.database.ReadOnlyCursor;
 import com.holub.database.Table;
 import com.holub.text.ParseFailure;
-import com.team15.erp.dto.order.OrderStatus;
 import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.model.Mapper;
 import java.io.IOException;
@@ -17,7 +16,6 @@ public class Orders extends Mapper {
     public ArrayList<OrdersDto> getAllOrders() throws IOException, ParseFailure {
         ArrayList<OrdersDto> ordersDtos = new ArrayList<>();
 
-        this.dbConnection.initialize(DEFAULT_FILE_ROUTE);
         ReadOnlyCursor order = this.dbConnection.query("select distinct * from order").readOnlyCursor();
 
         for (Object[] row: order.rows()) {
@@ -32,7 +30,7 @@ public class Orders extends Mapper {
         Long id = 0L;
         Long customerId = 0L;
         ZonedDateTime orderDate = null;
-        List<HashMap<String, Long>> orderProductIds = new ArrayList<>();
+        String productType = null;
         String orderStatus = null;
 
         for (int i = 0; i < columnNames.length; i++) {
@@ -45,11 +43,11 @@ public class Orders extends Mapper {
             if (columnNames[i].equals("order_date")) {
                 orderDate = toZonedDateTime((String) row[i]);
             }
-            if (columnNames[i].equals("order_status")) {
-                orderStatus = (String) row[i];
+            if (columnNames[i].equals("product_type")) {
+                productType = (String) row[i];
             }
             if (columnNames[i].equals("order_product_ids")) {
-                orderProductIds = toOrderProducts((String) row[i]);
+                orderStatus = ((String) row[i]);
             }
         }
 
@@ -57,25 +55,9 @@ public class Orders extends Mapper {
                 id,
                 customerId,
                 orderDate,
-                orderProductIds,
+                productType,
                 orderStatus
         );
-    }
-
-    private List<HashMap<String, Long>> toOrderProducts(final String inputOrderProductIds) {
-        List<String> parseOrderProducts = new ArrayList<>(List.of(inputOrderProductIds.split("/")));
-        List<HashMap<String, Long>> orderProductIds = new ArrayList<>();
-
-        for (String parseOrderProduct : parseOrderProducts) {
-            String[] infos = parseOrderProduct.split("-");
-            String productType = infos[0];
-            Long productId = Long.valueOf(infos[1]);
-            HashMap<String, Long> orderProduct = new HashMap<>();
-            orderProduct.put(productType, productId);
-            orderProductIds.add(orderProduct);
-        }
-
-        return orderProductIds;
     }
 
     public int getOrderTableSize() throws IOException, ParseFailure {

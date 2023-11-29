@@ -1,0 +1,3 @@
+orders
+id,	customer_id,	order_date,	order_status,	order_product_ids
+0,	1,	2023-11-29 01:19:18,	ORDER,	책-1
