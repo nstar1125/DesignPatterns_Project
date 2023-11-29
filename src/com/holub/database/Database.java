@@ -1508,7 +1508,7 @@ public final class Database
 		List  processedValues = new LinkedList();
 		Table t = (Table) tables.get( tableName );
 
-		if (t.readOnlyCursor().hasColumn("id")) {
+		if (t.readOnlyCursor().hasColumn("id") && t.readOnlyCursor().columnIndex("id") == 0) {
 			Object last_obj = t.rows().getRowSet().getLast();
 			Object[] row = (Object[]) last_obj;
 			int next_id = Integer.parseInt((String)row[0]) + 1;
