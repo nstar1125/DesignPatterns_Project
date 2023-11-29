@@ -20,10 +20,10 @@ public class ProductFactory {
             case "신발":
                 try {
                     productDto = new ShoesDto(
-                            Long.parseLong(info[0]), ProductType.SHOES.getProductType(),
-                            info[1], Integer.parseInt(info[2]), Integer.parseInt(info[3]),
-                            info[4], toZonedDateTime(info[5]), null,
-                            info[7]
+                            ProductType.SHOES.getProductType(),
+                            info[1], Integer.parseInt(info[2]),
+                            Integer.parseInt(info[3]),
+                            info[4], ProductType.SHOES.getProductType()
                     );
                 } catch (NumberFormatException e) {
                     throw new NumberFormatException("잘못된 포맷: " + productStr);
@@ -32,10 +32,9 @@ public class ProductFactory {
             case "책":
                 try {
                     productDto = new BookDto(
-                            Long.parseLong(info[0]), ProductType.BOOK.getProductType(),
+                            ProductType.BOOK.getProductType(),
                             info[1], Integer.parseInt(info[2]), info[3],
-                            Integer.parseInt(info[4]), toZonedDateTime(info[5]), null,
-                            info[7]
+                            Integer.parseInt(info[4]), ProductType.SHOES.getProductType()
                     );
                 } catch (NumberFormatException e) {
                     throw new NumberFormatException("잘못된 포맷: " + productStr);
