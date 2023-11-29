@@ -2,12 +2,14 @@ package com.team15.erp.model.product;
 
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
+import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.model.Mapper;
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,9 +18,17 @@ public class Book extends Mapper {
 
     public int getNumberOfBooks() {
         try {
+            ArrayList<BookDto> bookDtos = new ArrayList<>();
             ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
 
-            return book.rows().length;
+            for (Object[] row: book.rows()) {
+                bookDtos.add((BookDto) map(row, book.columnNames()));
+            }
+
+            return (int) bookDtos
+                    .stream()
+                    .filter(bookDto -> bookDto.getStatus().equals(ProductStatus.SALE.getProductStatus()))
+                    .count();
         } catch (IOException ioException) {
             System.out.println(ioException);
         } catch (ParseFailure parseFailure) {
