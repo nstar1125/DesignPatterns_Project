@@ -1,5 +1,5 @@
-shoes
-id,	product_name,	price,	size,	brand,	store_at,		release_at,	status
-0,	shoes1,		16000,	240,	190,	2023-11-28 15:16:10,	null,		SALE
-1,	shoes2,		18000,	230,	350,	2023-11-28 15:16:10,	null,		SALE
-2,	shoes3,		20000,	270,	300,	2023-11-28 15:16:10,	null,		SOLD
+<anonymous>
+id,	product_name,	price,	size,	brand,	store_at,	release_at,	status
+0,	shoes1,	16000,	240,	190,	2023-11-28 15:16:10,	null,	SALE
+1,	shoes2,	18000,	230,	350,	2023-11-28 15:16:10,	null,	SALE
+2,	shoes3,	20000,	270,	300,	2023-11-28 15:16:10,	null,	SOLD
