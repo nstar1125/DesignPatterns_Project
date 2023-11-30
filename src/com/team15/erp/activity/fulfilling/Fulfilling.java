@@ -33,10 +33,9 @@ public class Fulfilling<Option> extends Activity<Option> {
         List<String> fulfillingOrder = Files.readAllLines(Paths.get((String) o));
 
         ArrayList<ProductDto> incomingProductDtos = new Inspection().inspect(fulfillingOrder);
-        System.out.println(incomingProductDtos);
 
         for(ProductDto p: incomingProductDtos) {
-            System.out.println("처리 전 입고 상품: " + "상품 종류: " + p.getProductType() + "상품 이름: " + p.getProductName());
+            System.out.println("처리 전 입고 상품 / " + "상품 종류: " + p.getProductType() + ", 상품 이름: " + p.getProductName());
         }
 
         Fulfillings fulfillings = new Fulfillings();

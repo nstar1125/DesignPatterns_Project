@@ -8,7 +8,7 @@ import com.team15.erp.model.Mapper;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Customer extends Mapper {
+public class Customer extends Mapper<CustomerDto> {
 
     public ArrayList<CustomerDto> getAllCustomers() throws IOException, ParseFailure {
         ArrayList<CustomerDto> customerDtos = new ArrayList<>();
@@ -23,7 +23,7 @@ public class Customer extends Mapper {
     }
 
     @Override
-    protected Object map(Object[] row, String[] columnNames) {
+    protected CustomerDto map(Object[] row, String[] columnNames) {
         String id = "0";
         String name = NULL;
         String address = NULL;

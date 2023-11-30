@@ -7,6 +7,7 @@ import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.dto.product.ShoesDto;
 import com.team15.erp.model.Mapper;
+
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -14,25 +15,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Shoes extends Mapper {
+public class Shoes extends Mapper<ShoesDto> {
 
     public int getNumberOfShoes() {
         try {
             ArrayList<ShoesDto> shoesDtos = new ArrayList<>();
             ReadOnlyCursor shoes = this.dbConnection.query("select distinct * from shoes").readOnlyCursor();
 
-            for (Object[] row: shoes.rows()) {
+            for (Object[] row : shoes.rows()) {
                 shoesDtos.add((ShoesDto) map(row, shoes.columnNames()));
             }
 
             return (int) shoesDtos
                     .stream()
-                    .filter(bookDto -> bookDto.getStatus().equals(ProductStatus.SALE.getProductStatus()))
+                    .filter(bookDto -> bookDto.getStatus().equals(ProductStatus.SALE))
                     .count();
-        } catch (IOException ioException) {
-            System.out.println(ioException);
-        } catch (ParseFailure parseFailure) {
-            System.out.println(parseFailure);
+        } catch (IOException | ParseFailure e) {
+            System.out.println(e.getMessage());
         }
 
         return 0;
@@ -40,9 +39,9 @@ public class Shoes extends Mapper {
 
     public List<Object> selectAllByNameBrandSize(String productName, String brand, Integer size) throws IOException, ParseFailure {
         ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
-                "where product_name = \""+productName+"\" "+
-                "and brand = \""+brand+"\" "+
-                "and size = "+size).readOnlyCursor();
+                "where product_name = \"" + productName + "\" " +
+                "and brand = \"" + brand + "\" " +
+                "and size = " + size).readOnlyCursor();
 
         return Arrays.stream(cursor.rows())
                 .map(row -> map(row, cursor.columnNames()))
@@ -51,14 +50,21 @@ public class Shoes extends Mapper {
 
     public Object selectByNameBrand(String productName, String brand) throws IOException, ParseFailure {
         ReadOnlyCursor cursor = dbConnection.query("select * from shoes " +
-                "where product_name = \""+productName+"\""+
-                "and brand = \""+brand+"\"").readOnlyCursor();
+                "where product_name = \"" + productName + "\"" +
+                "and brand = \"" + brand + "\"").readOnlyCursor();
 
         return map(cursor.row(0), cursor.columnNames());
     }
 
+    public void insert(ShoesDto shoes) throws IOException, ParseFailure {
+        dbConnection.transaction(new ArrayList<>(List.of(String.format("" +
+                        "insert into Shoes(product_name, price, size, brand, store_at, release_at, status) VALUES ('%s', '%d', '%d', '%s', '%s', '%s', '%s')",
+                shoes.getProductName(), shoes.getPrice(), shoes.getSize(), shoes.getBrand(), getCurrentZonedDateTimeToString(), null, shoes.getStatus().name()
+        ))));
+    }
+
     @Override
-    protected Object map(final Object[] row, final String[] columnNames) {
+    protected ShoesDto map(final Object[] row, final String[] columnNames) {
         Long id = 0L;
         String productType = ProductType.SHOES.getProductType();
         String productName = NULL;
@@ -67,7 +73,7 @@ public class Shoes extends Mapper {
         String brand = NULL;
         ZonedDateTime storeAt = null;
         ZonedDateTime releaseAt = null;
-        String status = ProductStatus.SALE.getProductStatus();
+        ProductStatus status = ProductStatus.SALE;
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
@@ -92,7 +98,7 @@ public class Shoes extends Mapper {
                 releaseAt = toZonedDateTime((String) row[i]);
             }
             if (columnNames[i].equals("status")) {
-                status = (String) row[i];
+                status = ProductStatus.valueOf((String) row[i]);
             }
         }
 

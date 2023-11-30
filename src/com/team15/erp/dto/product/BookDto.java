@@ -22,7 +22,7 @@ public class BookDto extends ProductDto {
             final Integer price,
             final String writer,
             final Integer numberOfPage,
-            final String status
+            final ProductStatus status
     ) {
         super(productType, productName, price, status);
         this.writer = writer;

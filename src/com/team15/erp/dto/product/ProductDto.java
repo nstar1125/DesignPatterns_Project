@@ -8,13 +8,13 @@ public abstract class ProductDto {
     private String productType;
     private String productName;
     private Integer price;
-    private String status;
+    private ProductStatus status;
 
     public ProductDto(
             final String productType,
             final String productName,
             final Integer price,
-            final String status
+            final ProductStatus status
     ) {
         this.productType = productType;
         this.productName = productName;
@@ -34,7 +34,7 @@ public abstract class ProductDto {
         return price;
     }
 
-    public String getStatus() {
+    public ProductStatus getStatus() {
         return status;
     }
 

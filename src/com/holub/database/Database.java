@@ -1607,6 +1607,7 @@ public final class Database {    /* The directory that represents the database.
             Object[] row = (Object[]) last_obj;
             int next_id = Integer.parseInt((String) row[0]) + 1;
             processedValues.add(String.valueOf(next_id));
+            columns.add(0, "id");
         }
 
         for (Iterator i = values.iterator(); i.hasNext(); ) {
@@ -1620,7 +1621,7 @@ public final class Database {    /* The directory that represents the database.
         if (columns == null)
             return t.insert(processedValues);
 
-        verify(columns.size() == values.size(),
+        verify(columns.size() == processedValues.size(),
                 "There must be a value for every listed column");
         return t.insert(columns, processedValues);
     }

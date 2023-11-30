@@ -8,25 +8,25 @@ public class StockVisitor implements ProductVisitor {
 
     @Override
     public void visit(ShoesDto shoes) {
-        if (shoes.getStatus().equals(ProductStatus.SOLD.getProductStatus())) return;
+        if (shoes.getStatus().equals(ProductStatus.SOLD)) return;
 
-        System.out.println(String.format("%4s: %5s %3d %6s %10d ",
+        System.out.printf("%4s: %5s %3d %6s %10d %n",
                 shoes.getStatus(),
                 shoes.getProductName(),
                 shoes.getSize(),
                 shoes.getBrand(),
-                shoes.getPrice()));
+                shoes.getPrice());
     }
 
     @Override
     public void visit(BookDto book) {
-        if (book.getStatus().equals(ProductStatus.SOLD.getProductStatus())) return;
+        if (book.getStatus().equals(ProductStatus.SOLD)) return;
 
-        System.out.println(String.format("%4s: %5s %8s %5d %10d ",
+        System.out.printf("%4s: %5s %8s %5d %10d %n",
                 book.getStatus(),
                 book.getProductName(),
                 book.getWriter(),
                 book.getNumberOfPage(),
-                book.getPrice()));
+                book.getPrice());
     }
 }
