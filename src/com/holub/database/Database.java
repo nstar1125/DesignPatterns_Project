@@ -1603,11 +1603,16 @@ public final class Database {    /* The directory that represents the database.
         Table t = (Table) tables.get(tableName);
 
         if (t.readOnlyCursor().hasColumn("id") && t.readOnlyCursor().columnIndex("id") == 0) {
-            Object last_obj = t.rows().getRowSet().getLast();
-            Object[] row = (Object[]) last_obj;
-            int next_id = Integer.parseInt((String) row[0]) + 1;
+            int next_id = 0;
+            if (!t.rows().getRowSet().isEmpty()) {
+                Object last_obj = t.rows().getRowSet().getLast();
+                Object[] row = (Object[]) last_obj;
+                next_id = Integer.parseInt((String) row[0]) + 1;
+            }
             processedValues.add(String.valueOf(next_id));
-            columns.add(0, "id");
+            if (columns != null) {
+                columns.add(0, "id");
+            }
         }
 
         for (Iterator i = values.iterator(); i.hasNext(); ) {
