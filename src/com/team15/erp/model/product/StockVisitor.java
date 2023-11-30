@@ -10,7 +10,7 @@ public class StockVisitor implements ProductVisitor {
     public void visit(ShoesDto shoes) {
         if (shoes.getStatus().equals(ProductStatus.SOLD.getProductStatus())) return;
 
-        System.out.println(String.format("%4s: %3d번 %5s %3d %6s %10d ",
+        System.out.println(String.format("%4s: %5s %3d %6s %10d ",
                 shoes.getStatus(),
                 shoes.getProductName(),
                 shoes.getSize(),
@@ -22,7 +22,7 @@ public class StockVisitor implements ProductVisitor {
     public void visit(BookDto book) {
         if (book.getStatus().equals(ProductStatus.SOLD.getProductStatus())) return;
 
-        System.out.println(String.format("%4s: %3d번 %5s %8s %5d %10d ",
+        System.out.println(String.format("%4s: %5s %8s %5d %10d ",
                 book.getStatus(),
                 book.getProductName(),
                 book.getWriter(),
