@@ -1,5 +1,7 @@
 package com.holub.database;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 import com.holub.text.ParseFailure;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Test;
@@ -87,8 +89,11 @@ class ConcreteTableTest extends TestCase {
     }
     @Test
     public void selectJoinWithStar() throws IOException, ParseFailure {
-        setData();
-        String query = " select * from address, name where address.addrId = name.addrId";
+//        setData();
+        Database database = new Database("Dbase");
+        database.begin();
+
+        String query = "select * from address, name where address.addrId = name.addrId";
         Table result = database.execute(query);
         String expected = "<anonymous>\n" +
                 "addrId\tstreet\tcity\tstate\tzip\tfirst\tlast\t\n" +
@@ -101,7 +106,9 @@ class ConcreteTableTest extends TestCase {
     }
     @Test
     public void selectWithDistinct() throws IOException, ParseFailure {
-        setData();
+        Database database = new Database("Dbase");
+        database.begin();
+
         String query = "select distinct addrId from name";
         Table result = database.execute(query);
         String expected = "<anonymous>\n" +
@@ -113,17 +120,13 @@ class ConcreteTableTest extends TestCase {
     }
     @Test
     public void selectWithOrderBy() throws IOException, ParseFailure {
-        setData();
-        String query = "select * from name order by addrId, last desc";
-        Table result = database.execute(query);
-        String expected = "<anonymous>\n" +
-                "first\tlast\taddrId\t\n" +
-                "----------------------------------------\n" +
-                "firstD\tlastD\t0\t\n" +
-                "firstC\tlastC\t0\t\n" +
-                "firstB\tlastB\t1\t\n" +
-                "firstA\tlastA\t1\t\n";
-        assertEquals(result.toString(), expected);
+        Database database = new Database("Dbase");
+        database.begin();
+
+        String query = "select * from name4 order by addrId DESC, last DESC";
+        Object[] expected = new Object[]{"aa", "aa", "Fred", "Wilma", "Allen"};
+
+        assertArrayEquals(expected, database.execute(query).readOnlyCursor().column("first"));
     }
     @Test
     public void selectFromNestedQuery() throws IOException, ParseFailure {

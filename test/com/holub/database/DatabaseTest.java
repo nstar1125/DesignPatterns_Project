@@ -157,6 +157,5 @@ public class DatabaseTest {
         database.begin();
         database.execute("INSERT INTO customer2 VALUES ('Data5', 'Data6')");
         database.commit();
-        database.dump();
     }
 }
