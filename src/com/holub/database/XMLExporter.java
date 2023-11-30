@@ -4,77 +4,45 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 public class XMLExporter implements Table.Exporter {
+
+    private final ArrayList<String> columnNames = new ArrayList<String>();
     private final Writer out;
-    private final Document doc;
-    private Element root;
-    private final ArrayList<String> columnNames = new ArrayList<>();
+    private String tableName;
 
-    public XMLExporter(Writer out) {
+    public XMLExporter( Writer out ) {
         this.out = out;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
+    }
+    public void startTable() throws IOException {
+        out.write("<?xml version=\"1.0\"?>\n");
+    }
+    public void storeMetadata( String tableName, int width, int height, Iterator columnNames ) throws IOException {
+        this.tableName = tableName == null ? "anonymous" : tableName;
+
+        out.write("<" + tableName + ">\n");
+        out.write("<columns>");
+
+        while(columnNames.hasNext()){
+            String columnName = columnNames.next().toString();
+            this.columnNames.add(columnName);
+            out.write(String.format("<item>%s</item>", columnName));
         }
-        doc = builder.newDocument();
+        out.write("</columns>\n");
     }
 
-    @Override
-    public void storeMetadata( String tableName, int width, int height, Iterator itColumnNames) {
-        root = doc.createElement(tableName == null ? "anonymous" : tableName);
-        doc.appendChild(root);
-        while (itColumnNames.hasNext()){
-            this.columnNames.add(itColumnNames.next().toString());
-        }
-    }
-
-    @Override
-    public void storeRow(Iterator data) {
-        Element row = doc.createElement("ROW");
-        root.appendChild(row);
+    public void storeRow( Iterator data ) throws IOException {
+        out.write("<item>");
 
         int i = 0;
-        while (data.hasNext()) {
+        while(data.hasNext()) {
             Object datum = data.next();
-
-            if (datum != null) {
-                Element column = doc.createElement(columnNames.get(i));
-                column.appendChild(doc.createTextNode(datum.toString()));
-                row.appendChild(column);
-            }
-
+            Object columnName = columnNames.get(i);
+            out.write(String.format("<%s>%s</%s>", columnName, datum, columnName));
             i++;
         }
+        out.write("</item>\n");
     }
-
-    @Override
-    public void startTable() {/*nothing to do*/}
-
-    @Override
-    public void endTable() throws IOException {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer;
-        try {
-            transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(out);
-            transformer.transform(source, result);
-        } catch (TransformerException e) {
-            throw new RuntimeException(e);
-        }
+    public void endTable()   throws IOException {
+        out.write("</" + tableName + ">\n");
     }
 }
