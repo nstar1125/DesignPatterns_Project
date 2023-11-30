@@ -556,15 +556,11 @@ import com.holub.tools.ArrayIterator;
 		allTables[0] = this;
 		System.arraycopy(otherTables, 0, allTables, 1, otherTables.length);
 
-		// if passed *, requestedColumns == null
-		// copy all columns of all tables
+		// if requestedColumns is null, select * from table, otherTables
 		if(requestedColumns == null){
-			LinkedHashSet<String> columns = new LinkedHashSet<>();
-			for(Table table: allTables){
-				columns.addAll(Arrays.asList(((ConcreteTable) table).getColumnNames()));
-			}
-			requestedColumns = columns.toArray(String[]::new);
+			requestedColumns =  makeColumns(allTables[0], otherTables);
 		}
+
 
 		// Create places to hold the result of the join and to hold
 		// iterators for each table involved in the join.
@@ -595,6 +591,32 @@ import com.holub.tools.ArrayIterator;
 	 * and then asks the selector whether or not to approve that row. It then goes
 	 * up a notch, advances the correct iterator, and recurses back down.
 	 */
+
+	private static String[] makeColumns(Table table, Table[] otherTables){
+		// By using a Set, you can eliminate duplicate columns.
+
+		Set<String> columnsSet = new HashSet<>();
+
+		for(int i = 0; i < table.rows().columnCount(); i++) columnsSet.add(table.rows().columnName(i));
+
+		for(Table otherTable : otherTables) {
+			for(int i = 0; i < otherTable.rows().columnCount(); i++) {
+				columnsSet.add(otherTable.rows().columnName(i));
+			}
+		}
+
+		// Copy the data inside the Set into a String array.
+
+		String[] columnNames = new String[columnsSet.size()];
+
+		Object[] otherColumnsObjArr = columnsSet.toArray();
+		for(int i = 0; i < otherColumnsObjArr.length; i++) {
+			columnNames[i] = (String)otherColumnsObjArr[i];
+		}
+
+		return columnNames;
+	}
+
 	private static void selectFromCartesianProduct(int level, Selector where, String[] requestedColumns,
 												   Table[] allTables, Cursor[] allIterators, Table resultTable) {
 		allIterators[level] = allTables[level].rows();
