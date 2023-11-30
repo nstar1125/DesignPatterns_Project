@@ -36,7 +36,9 @@ public class DBConnectionTest {
         dbConnection.initialize("DBase");
 
         ArrayList<String> queries = new ArrayList<>();
-        queries.add("INSERT INTO customer VALUES ('alice', 'wonju')");
+        queries.add("CREATE TABLE temp (id int, name varchar(20), city varchar(20), primary key(id))");
+        queries.add("INSERT INTO temp VALUES ('alice', 'wonju')");
+        queries.add("DROP TABLE temp");
         dbConnection.transaction(queries);
     }
 
@@ -47,7 +49,9 @@ public class DBConnectionTest {
         dbConnection.initialize("DBase");
 
         ArrayList<String> queries = new ArrayList<>();
-        queries.add("INSERT INTO name VALUES ('aa', 'bb', 1)");
+        queries.add("CREATE TABLE temp (id int, last varchar(20), first varchar(20), addrId int, primary key(id))");
+        queries.add("INSERT INTO temp VALUES ('aa', 'bb', 1)");
+        queries.add("DROP TABLE temp");
         dbConnection.transaction(queries);
     }
 }

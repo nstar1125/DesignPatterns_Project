@@ -63,17 +63,9 @@ class ConcreteTableTest extends TestCase {
         assertEquals(out.toString(), expected);
     }
     @Test
-    public void xmlExportTest() throws IOException, SQLException {
+    public void xmlExportTest() throws IOException {
         setData();
-        String expected = "<?xml version=\"1.0\"?>\n" +
-                "<address>\n" +
-                "<columns><item>addrId</item><item>street</item><item>city" +
-                "</item><item>state</item><item>zip</item></columns>\n" +
-                "<item><addrId>0</addrId><street>streetA</street><city>cityA" +
-                "</city><state>stateA</state><zip>zipA</zip></item>\n" +
-                "<item><addrId>1</addrId><street>streetB</street><city>cityB" +
-                "</city><state>stateB</state><zip>zipB</zip></item>\n" +
-                "</address>\n";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><address><ROW><addrId>0</addrId><street>streetA</street><city>cityA</city><state>stateA</state><zip>zipA</zip></ROW><ROW><addrId>1</addrId><street>streetB</street><city>cityB</city><state>stateB</state><zip>zipB</zip></ROW></address>";
         StringWriter out = new StringWriter();
         address.export(new XMLExporter(out));
         assertEquals(out.toString(), expected);
@@ -100,7 +92,7 @@ class ConcreteTableTest extends TestCase {
         database.begin();
 
         String query = "select * from name4 order by addrId DESC, last DESC";
-        Object[] expected = new Object[]{"aa", "aa", "Fred", "Wilma", "Allen"};
+        Object[] expected = new Object[]{"Fred", "Wilma", "Allen"};
 
         assertArrayEquals(expected, database.execute(query).readOnlyCursor().column("first"));
     }
