@@ -2,11 +2,11 @@ package com.team15.erp.model.product;
 
 import com.holub.database.ReadOnlyCursor;
 import com.holub.text.ParseFailure;
-import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ProductStatus;
 import com.team15.erp.dto.product.ProductType;
 import com.team15.erp.model.Mapper;
+
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -14,25 +14,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Book extends Mapper {
+public class Book extends Mapper<BookDto> {
 
     public int getNumberOfBooks() {
         try {
             ArrayList<BookDto> bookDtos = new ArrayList<>();
             ReadOnlyCursor book = this.dbConnection.query("select distinct * from book").readOnlyCursor();
 
-            for (Object[] row: book.rows()) {
-                bookDtos.add((BookDto) map(row, book.columnNames()));
+            for (Object[] row : book.rows()) {
+                bookDtos.add(map(row, book.columnNames()));
             }
 
             return (int) bookDtos
                     .stream()
-                    .filter(bookDto -> bookDto.getStatus().equals(ProductStatus.SALE.getProductStatus()))
+                    .filter(bookDto -> bookDto.getStatus().equals(ProductStatus.SALE))
                     .count();
-        } catch (IOException ioException) {
-            System.out.println(ioException);
-        } catch (ParseFailure parseFailure) {
-            System.out.println(parseFailure);
+        } catch (IOException | ParseFailure e) {
+            System.out.println(e.getMessage());
         }
 
         return 0;
@@ -40,16 +38,24 @@ public class Book extends Mapper {
 
     public List<Object> selectAllByNameWriter(String productName, String writer) throws IOException, ParseFailure {
         ReadOnlyCursor cursor = dbConnection.query("select * from book " +
-                "where product_name = \""+productName+"\"" +
-                "and writer = \""+writer+"\"").readOnlyCursor();
+                "where product_name = \"" + productName + "\"" +
+                "and writer = \"" + writer + "\"").readOnlyCursor();
 
         return Arrays.stream(cursor.rows())
                 .map(row -> map(row, cursor.columnNames()))
                 .collect(Collectors.toList());
     }
 
+    public void insert(BookDto book) throws IOException, ParseFailure {
+        dbConnection.transaction(new ArrayList<>(List.of(String.format("" +
+                "insert into Book(product_name, price, writer, number_of_page, store_at, release_at, status) VALUES ('%s', '%d', '%s', '%d', '%s', '%s', '%s')",
+                book.getProductName(), book.getPrice(), book.getWriter(), book.getNumberOfPage(), getCurrentZonedDateTimeToString(), null, book.getStatus().name()
+            )))
+        );
+    }
+
     @Override
-    protected Object map(final Object[] row, final String[] columnNames) {
+    protected BookDto map(final Object[] row, final String[] columnNames) {
         Long id = 0L;
         String productType = ProductType.BOOK.getProductType();
         String productName = NULL;
@@ -58,11 +64,11 @@ public class Book extends Mapper {
         Integer numberOfPage = 0;
         ZonedDateTime storeAt = null;
         ZonedDateTime releaseAt = null;
-        String status = ProductStatus.SALE.getProductStatus();
+        ProductStatus status = ProductStatus.SALE;
 
         for (int i = 0; i < columnNames.length; i++) {
             if (columnNames[i].equals("id")) {
-                id = Long.valueOf((String) row[i]) ;
+                id = Long.valueOf((String) row[i]);
             }
             if (columnNames[i].equals("product_name")) {
                 productName = (String) row[i];
@@ -83,7 +89,7 @@ public class Book extends Mapper {
                 releaseAt = toZonedDateTime((String) row[i]);
             }
             if (columnNames[i].equals("status")) {
-                status = (String) row[i];
+                status = ProductStatus.valueOf((String) row[i]);
             }
         }
 

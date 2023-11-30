@@ -1,26 +1,29 @@
 package com.team15.erp.model.fulfilling;
 
 import com.holub.text.ParseFailure;
+import com.team15.erp.dto.product.BookDto;
 import com.team15.erp.dto.product.ProductDto;
+import com.team15.erp.dto.product.ShoesDto;
 import com.team15.erp.model.Mapper;
+import com.team15.erp.model.product.Book;
+import com.team15.erp.model.product.Shoes;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Fulfillings extends Mapper {
 
     public void saveProduct(ArrayList<ProductDto> productDtoList) throws IOException, ParseFailure {
         for(ProductDto p: productDtoList) {
-            String query;
+            switch (p.getProductType()) {
 
-            if("책".equals(p.getProductType())) {
-                query = String.format("insert into book(product_name, price, status) VALUES ('%s', '%d', '%s')", p.getProductName(), p.getPrice(), p.getStatus());
-            } else {
-                query = String.format("insert into Shoes(product_name, price, status) VALUES ('%s', '%d', '%s')", p.getProductName(), p.getPrice(), p.getStatus());
             }
-            dbConnection.transaction(new ArrayList<>(List.of(query)));
+            if("책".equals(p.getProductType())) {
+                new Book().insert((BookDto) p);
+            } else {
+                new Shoes().insert((ShoesDto) p);
+            }
         }
     }
 

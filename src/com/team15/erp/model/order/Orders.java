@@ -9,19 +9,15 @@ import com.team15.erp.dto.order.OrderStatus;
 import com.team15.erp.dto.order.OrdersDto;
 import com.team15.erp.model.Mapper;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class Orders extends Mapper {
+public class Orders extends Mapper<OrdersDto> {
 
     public ArrayList<OrdersDto> getAllOrders() throws IOException, ParseFailure {
         ArrayList<OrdersDto> ordersDtos = new ArrayList<>();
@@ -29,14 +25,14 @@ public class Orders extends Mapper {
         ReadOnlyCursor order = this.dbConnection.query("select distinct * from orders").readOnlyCursor();
 
         for (Object[] row: order.rows()) {
-            ordersDtos.add((OrdersDto) map(row, order.columnNames()));
+            ordersDtos.add(map(row, order.columnNames()));
         }
 
         return ordersDtos;
     }
 
     @Override
-    protected Object map(final Object[] row, final String[] columnNames) {
+    protected OrdersDto map(final Object[] row, final String[] columnNames) {
         Long customerId = 0L;
         ZonedDateTime orderDate = null;
         String productType = null;
@@ -96,9 +92,5 @@ public class Orders extends Mapper {
             }
         }
         return count;
-    }
-
-    private String getCurrentZonedDateTimeToString() { //현재 시간 계산
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(ZonedDateTime.now());
     }
 }

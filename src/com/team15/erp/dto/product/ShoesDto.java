@@ -22,7 +22,7 @@ public class ShoesDto extends ProductDto {
             final Integer price,
             final Integer size,
             final String brand,
-            final String status
+            final ProductStatus status
     ) {
         super(productType, productName, price, status);
         this.size = size;

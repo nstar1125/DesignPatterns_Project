@@ -4,7 +4,9 @@ import com.team15.erp.dto.product.ProductDto;
 import com.team15.erp.model.product.ProductFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Inspection {
     public ArrayList<ProductDto> inspect(List<String> products) throws NumberFormatException {
@@ -20,7 +22,7 @@ public class Inspection {
         String[] token = productStr.split("/");
 
         String type = token[0].trim();
-        String[] info = token[1].trim().split(" ");
+        List<String> info = Arrays.stream(token[1].trim().split(",")).map(String::trim).collect(Collectors.toList());
 
         return new ProductFactory().getProduct(type, productStr, info);
     }
