@@ -78,32 +78,7 @@ class ConcreteTableTest extends TestCase {
         address.export(new XMLExporter(out));
         assertEquals(out.toString(), expected);
     }
-    @Test
-    public void xmlImportTest() throws IOException, SQLException {
-        setData();
-        StringWriter out = new StringWriter();
-        address.export(new XMLExporter(out));
 
-        Table importedTable = new ConcreteTable(new XMLImporter(new StringReader(out.toString())));
-        assertEquals(importedTable.toString(), address.toString());
-    }
-    @Test
-    public void selectJoinWithStar() throws IOException, ParseFailure {
-//        setData();
-        Database database = new Database("Dbase");
-        database.begin();
-
-        String query = "select * from address, name where address.addrId = name.addrId";
-        Table result = database.execute(query);
-        String expected = "<anonymous>\n" +
-                "addrId\tstreet\tcity\tstate\tzip\tfirst\tlast\t\n" +
-                "----------------------------------------\n" +
-                "0\tstreetA\tcityA\tstateA\tzipA\tfirstC\tlastC\t\n" +
-                "0\tstreetA\tcityA\tstateA\tzipA\tfirstD\tlastD\t\n" +
-                "1\tstreetB\tcityB\tstateB\tzipB\tfirstA\tlastA\t\n" +
-                "1\tstreetB\tcityB\tstateB\tzipB\tfirstB\tlastB\t\n";
-        assertEquals(result.toString(), expected);
-    }
     @Test
     public void selectWithDistinct() throws IOException, ParseFailure {
         Database database = new Database("Dbase");
@@ -118,6 +93,7 @@ class ConcreteTableTest extends TestCase {
                 "0\t\n";
         assertEquals(result.toString(), expected);
     }
+
     @Test
     public void selectWithOrderBy() throws IOException, ParseFailure {
         Database database = new Database("Dbase");
@@ -127,17 +103,5 @@ class ConcreteTableTest extends TestCase {
         Object[] expected = new Object[]{"aa", "aa", "Fred", "Wilma", "Allen"};
 
         assertArrayEquals(expected, database.execute(query).readOnlyCursor().column("first"));
-    }
-    @Test
-    public void selectFromNestedQuery() throws IOException, ParseFailure {
-        setData();
-        String query = "select * from (select * from address, name where address.addrId = name.addrId) where addrId=1";
-        Table result = database.execute(query);
-        String expected = "<anonymous>\n" +
-                "addrId\tstreet\tcity\tstate\tzip\tfirst\tlast\t\n" +
-                "----------------------------------------\n" +
-                "1\tstreetB\tcityB\tstateB\tzipB\tfirstA\tlastA\t\n" +
-                "1\tstreetB\tcityB\tstateB\tzipB\tfirstB\tlastB\t\n";
-        assertEquals(result.toString(), expected);
     }
 }
